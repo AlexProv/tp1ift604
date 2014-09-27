@@ -20,4 +20,15 @@ public class MatchSimp {
 	public String getTeamName(){
 		return equipeV + "\n" + equipeD;
 	}
+	
+	
+	public String ToXml()
+	{
+		return SerializateurXML.objectToXML(this);
+	}
+	
+	static public MatchSimp XmlToBut(String s)
+	{
+		return (MatchSimp)SerializateurXML.xmlToObject(s);
+	}
 }

@@ -14,5 +14,15 @@ public class Penalite {
 		tempsPeriodeDebut = tempsPeriode;
 		tempsPeriodeFin = tempsPeriode + tempsPenalite;
 	}
+	
+	public String ToXml()
+	{
+		return SerializateurXML.objectToXML(this);
+	}
+	
+	static public Penalite XmlToBut(String s)
+	{
+		return (Penalite)SerializateurXML.xmlToObject(s);
+	}
 
 }

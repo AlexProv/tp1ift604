@@ -20,4 +20,14 @@ public class ListeDesMatchsSimp {
 	public ArrayList<MatchSimp> obtenirListeMatch(){
 		return listeDuel;
 	}
+	
+	public String ToXml()
+	{
+		return SerializateurXML.objectToXML(this);
+	}
+	
+	static public ListeDesMatchsSimp XmlToBut(String s)
+	{
+		return (ListeDesMatchsSimp)SerializateurXML.xmlToObject(s);
+	}
 }

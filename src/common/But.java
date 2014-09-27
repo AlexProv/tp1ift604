@@ -1,5 +1,6 @@
 package common;
 
+
 public class But {
 	
 	private String pointeur;
@@ -13,5 +14,18 @@ public class But {
 		this.numPeriode = numPeriode;
 		this.tempsPeriode = tempsPeriode;
 	}
-
+	
+	public String ToXml()
+	{
+		return SerializateurXML.objectToXML(this);
+	}
+	
+	static public But XmlToBut(String s)
+	{
+		return (But)SerializateurXML.xmlToObject(s);
+	}
+	
+	
+	
+	
 }

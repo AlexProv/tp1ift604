@@ -51,4 +51,15 @@ public class Match {
 	public int getId(){
 		return numero;
 	}
+	
+	
+	public String ToXml()
+	{
+		return SerializateurXML.objectToXML(this);
+	}
+	
+	static public Match XmlToBut(String s)
+	{
+		return (Match)SerializateurXML.xmlToObject(s);
+	}
 }

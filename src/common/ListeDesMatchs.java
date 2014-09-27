@@ -33,4 +33,15 @@ public class ListeDesMatchs {
 		}
 		return null;
 	}
+	
+	
+	public String ToXml()
+	{
+		return SerializateurXML.objectToXML(this);
+	}
+	
+	static public ListeDesMatchs XmlToBut(String s)
+	{
+		return (ListeDesMatchs)SerializateurXML.xmlToObject(s);
+	}
 }
