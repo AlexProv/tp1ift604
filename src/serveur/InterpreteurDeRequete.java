@@ -30,8 +30,8 @@ public class InterpreteurDeRequete implements Observer
 		else if (s.startsWith(Commands.GET_EQUIPES_MATCH.toString()))
 		{
 			try{
-				//ex: request|num|num 
-				String[] requestParams = s.split("|");
+				//ex: request/num/num 
+				String[] requestParams = s.split("/");
 				int matchID = Integer.parseInt(requestParams[1]); 
 				int previousmatchID = Integer.parseInt(requestParams[2]);
 				
@@ -49,8 +49,8 @@ public class InterpreteurDeRequete implements Observer
 		}
 		else if (s.startsWith(Commands.GET_CHRONO.toString()))
 		{
-			//ex: request|num 
-			String[] requestParams = s.split("|");
+			//ex: request/num 
+			String[] requestParams = s.split("/");
 			int matchID = Integer.parseInt(requestParams[1]); 
 			m = ListeDesMatchs.getListeDesMatchs().getMatch(matchID);
 			
@@ -60,7 +60,7 @@ public class InterpreteurDeRequete implements Observer
 		else if (s.startsWith(Commands.GET_POINTAGE.toString()))
 		{
 			//ex: request num 
-			String[] requestParams = s.split("|");
+			String[] requestParams = s.split("/");
 			int matchID = Integer.parseInt(requestParams[1]); 
 			m = ListeDesMatchs.getListeDesMatchs().getMatch(matchID);
 			
@@ -68,7 +68,7 @@ public class InterpreteurDeRequete implements Observer
 		}
 		else if (s.startsWith(Commands.GET_PENALITE.toString()))
 		{
-			//mathieu je ne sais pas comment les penalite fonctione mais il les a tt quand tu fait un get etuqipe match
+			//todo: mathieu je ne sais pas comment les penalite fonctione mais il les a tt quand tu fait un get etuqipe match
 			//String[] requestParams = s.split("\\s");
 			//int matchID = Integer.parseInt(requestParams[1]); 
 			//m = ListeDesMatchs.getListeDesMatchs().getMatch(matchID);

@@ -3,6 +3,8 @@ package client.Communication;
 import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
+
 import serveur.InterpreteurDeRequete;
 
 public class Client //implements Runnable
@@ -11,8 +13,7 @@ public class Client //implements Runnable
 	private DataOutputStream outStream;
 	private InetSocketAddress inetSocketAddress;
 	private Socket socket;
-	private String reponseServeur;
-	private final long REPONSE_TIMEOUT = 2000;
+
 	private InterpreteurDeRequete interpreteurRequete;
 	private String host;
 	private int port;
@@ -20,60 +21,42 @@ public class Client //implements Runnable
 	
 	public Client(String host, int port) throws IOException
 	{
-		try
-		{
-			this.host = host;
-			this.port = port;
-			inetSocketAddress = new InetSocketAddress(host, port);
-			socket = new Socket(host, port);
-			System.out.println("Connection a: " + socket);
-			socket.close();
-		}
-		catch(IOException ioe)
-		{
-			System.out.println(ioe);
-		}
+		this.host = host;
+		this.port = port;
 	}
+
 	
 	public String envoyerRequete(String cmd)
 	{
+		String reponse = "";
 		try
 		{
-			String reponse = "";
 			socket = new Socket(host, port);
-			//socket.connect(inetSocketAddress);
-			inStream = new DataInputStream(socket.getInputStream());
-			outStream = new DataOutputStream(socket.getOutputStream());
-
-			outStream.writeUTF(cmd);
-			Thread t = new Thread() {
-			    public void run() {
-					try {
-						reponseServeur = inStream.readUTF();
-					} catch (IOException ioe) {
-						System.out.println(ioe + " ... en attendant la reponse du serveur.");
-						ioe.printStackTrace();
-					}
-			    }
-			};
-			t.start();
-			t.join(REPONSE_TIMEOUT);
+			//TODO: peutertre mettre un timeout sur ce sucket la
+			PrintWriter  printWriter = new PrintWriter(socket.getOutputStream(), true);
+			BufferedReader inStream = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			
+			try
+			{
+				printWriter.println(cmd);
+				reponse = inStream.readLine();
+			}
+			catch (SocketTimeoutException ste)
+			{
+				reponse = "ste";
+				System.out.println("Timeout en attendant la reponse du serveur.");
+			}
 			
 			System.out.println("Reception de: " + reponse + "\n");
 			socket.close();
 		}
-		catch (InterruptedException ie)
-		{
-			reponseServeur = "ie";
-			System.out.println("Timeout en attendant la reponse du serveur.");
-		}
 		catch(IOException ioe)
 		{
-			reponseServeur = "ioe";
+			reponse = "ioe";
 			System.out.println(ioe);
 		}
 		
-		return reponseServeur;
+		return reponse;
 	}
 	
 	public void envoyerDonnee(String donnee)

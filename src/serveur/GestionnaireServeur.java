@@ -63,7 +63,6 @@ public class GestionnaireServeur
 							break;
 					}
 				}
-				//serveur1.EnvoyeTousClients(donnee);
 			}
 		}
 		catch(IOException ioe)

@@ -3,7 +3,6 @@ package client;
 import java.io.*;
 
 import common.Commands;
-
 import client.Communication.Client;
 
 public class GestionnaireClient {
@@ -28,11 +27,10 @@ public class GestionnaireClient {
 			Client client = new Client(ip, port1);
 			String reponse = "";
 			
-			while(reponse == "" || reponse == "ioe" || reponse == "ie")
-			{
-				System.out.println("Envoye de la requete: " + Commands.GET_LIST_MATCH.toString() + " ...");
-				reponse = client.envoyerRequete(Commands.GET_LIST_MATCH.toString());
-			}
+			System.out.println("Envoye de la requete: " + Commands.GET_LIST_MATCH.toString() + " ...");
+			reponse = client.envoyerRequete(Commands.GET_LIST_MATCH.toString());
+			System.out.println("icic!!!");
+			reponse = client.envoyerRequete(Commands.GET_POINTAGE.toString() + "/1");
 		}
 		catch(IOException ioe)
 		{

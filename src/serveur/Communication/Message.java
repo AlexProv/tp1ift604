@@ -1,8 +1,10 @@
 package serveur.Communication;
 
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.EOFException;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.Socket;
 
 import serveur.InterpreteurDeRequete;
@@ -25,28 +27,28 @@ public class Message implements Runnable
 	
 	public void run()
 	{
-		while(true){
-			try
-			{
-				DataInputStream inStream = new DataInputStream(socket.getInputStream());
-				String message = inStream.readUTF();
-				System.out.println( "reception du message -- " + message + " -- du socket: " + socket);
-				String answer = interpreteurRequete.ParseCommand(message);
-				serveur.EnvoyeAClient(socket, answer);
-				//TODO: la gestion des messages a faire ici..
-			}
-			catch(EOFException eofe)
-			{
-				System.out.println("EOF Execption just happen..");
-			}
-			catch(IOException ioe)
-			{
-				ioe.printStackTrace();
-			}
-			//finally
-			//{
-				//serveur.FermerConnection(socket);
-			//}
+		try
+		{
+			BufferedReader inStream = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			String message = inStream.readLine();
+			
+			/*DataInputStream inStream = new DataInputStream(socket.getInputStream());
+			String message = inStream.readUTF();*/
+			System.out.println( "reception du message -- " + message + " -- du socket: " + socket);
+			String answer = interpreteurRequete.ParseCommand(message);
+			serveur.EnvoyeAClient(socket, answer);
 		}
+		catch(EOFException eofe)
+		{
+			System.out.println("EOF Execption just happen..");
+		}
+		catch(IOException ioe)
+		{
+			ioe.printStackTrace();
+		}
+		//finally
+		//{
+			//serveur.FermerConnection(socket);
+		//}
 	}
 }

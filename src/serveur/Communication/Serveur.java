@@ -16,7 +16,7 @@ public class Serveur implements Runnable
 	public Serveur(int port) throws IOException
 	{
 		socketServeur = new ServerSocket(port);
-		socketServeur.setSoTimeout(3000);//Debloquer le serveur quand personne ne se connecte
+		//socketServeur.setSoTimeout(3000);//Debloquer le serveur quand personne ne se connecte
 		new Thread(this).start();
 	}
 	
@@ -28,19 +28,18 @@ public class Serveur implements Runnable
 			while(true)
 			{
 				try{
-					synchronized (outputStreams)
-					{
-						socket = socketServeur.accept();
-						System.out.println("Connection de " + socket);
-						outputStreams.put(socket, new DataOutputStream(socket.getOutputStream()));
-						message = new Message(this, socket);
-						pool.addTask(message);
-					}
-				} catch (SocketTimeoutException s){
-					System.out.println("Timeout waiting for client...");
+
+					socket = socketServeur.accept();
+					System.out.println("Connection de " + socket);
+					
+					//outputStreams.put(socket, new DataOutputStream(socket.getOutputStream()));
+					message = new Message(this, socket);
+					pool.addTask(message);
+				//} catch (SocketTimeoutException s){
+					//System.out.println("Timeout waiting for client...");}
 				} catch (IOException e) {
 					e.printStackTrace();
-					break;
+					//break;
 				}
 			}
 	}
@@ -49,7 +48,7 @@ public class Serveur implements Runnable
 	{
 		synchronized(outputStreams)
 		{
-			for (Enumeration e = outputStreams.elements(); e.hasMoreElements();)
+			for (Enumeration<DataOutputStream> e = outputStreams.elements(); e.hasMoreElements();)
 			{
 				DataOutputStream outStream = (DataOutputStream)e.nextElement();
 				try
@@ -65,22 +64,29 @@ public class Serveur implements Runnable
 		}
 	}
 	
-	public void EnvoyeAClient(Socket socket, String message)
+	public void EnvoyeAClient(Socket socket, String reponse)
 	{
-		DataOutputStream outStream;
-		synchronized(outputStreams)
+		try {
+			PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
+			printWriter.println(reponse);
+		} catch (IOException ioe) {
+			System.out.println(ioe);
+			ioe.printStackTrace();
+		}
+		//DataOutputStream outStream;
+		/*synchronized(outputStreams)
 		{
 			outStream = outputStreams.get(socket);
 			try
 			{
-				outStream.writeUTF(message);
+				outStream.writeUTF(reponse);
 			}
 			catch(IOException ioe)
 			{
 				System.out.println(ioe);
 				ioe.printStackTrace();
 			}
-		}
+		}*/
 	}
 	
 	public void FermerConnection(Socket socket)
