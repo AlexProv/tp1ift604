@@ -6,8 +6,27 @@ public class ListeDesMatchs {
 	private ArrayList<Match> liste;
 	private final int nbMatchsMaximum = 10;
 	
-	public ListeDesMatchs(){
+	static ListeDesMatchs lm;
+	
+
+	public static void setListeDesMatchs(ListeDesMatchs l)
+	{
+		lm = l;
+	}
+	public static ListeDesMatchs getListeDesMatchs()
+	{
+		if(lm == null)
+		{
+			lm = new ListeDesMatchs(1);
+			return lm;
+		}
+		return lm;
+	}
+	
+	private ListeDesMatchs(int i)
+	{
 		liste = new ArrayList<Match>();
+		lm = this;
 	}
 	
 	public int ajouterPartie(Match match){
@@ -26,7 +45,7 @@ public class ListeDesMatchs {
 		return ++numero;
 	}
 	
-	public Match obtenirMatch(int noMatch){
+	public Match getMatch(int noMatch){
 		for (Match match : liste) {
 			if(match.getId() == noMatch)
 				return match;
@@ -40,7 +59,7 @@ public class ListeDesMatchs {
 		return SerializateurXML.objectToXML(this);
 	}
 	
-	static public ListeDesMatchs XmlToBut(String s)
+	static public ListeDesMatchs XmlToListDesMatchs(String s)
 	{
 		return (ListeDesMatchs)SerializateurXML.xmlToObject(s);
 	}

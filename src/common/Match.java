@@ -53,6 +53,8 @@ public class Match implements Runnable{
 		AlertTimer alertTimer = new AlertTimer(this);
 		timerPeriode.scheduleAtFixedRate(periodeTimer, 2*60*1000,2*60*1000);
 				
+		
+		new Thread(this).start();
 	}
 	
 	public String getEquipeV() {
