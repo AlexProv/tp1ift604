@@ -1,8 +1,6 @@
 package serveur.Communication;
 
-import java.io.DataInputStream;
-import java.io.EOFException;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 
 public class Message implements Runnable
@@ -25,7 +23,7 @@ public class Message implements Runnable
 			while(true)
 			{
 				String message = inStream.readUTF();
-				System.out.println( "reception du message: " + message );
+				System.out.println( "reception du message -- " + message + " -- du socket: " + socket);
 				//TODO: la gestion des messages a faire ici..
 			}
 		}

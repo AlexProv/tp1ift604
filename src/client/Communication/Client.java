@@ -1,8 +1,6 @@
 package client.Communication;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 
 import client.GestionnaireClient;
@@ -22,11 +20,12 @@ public class Client implements Runnable
 			System.out.println("Connection a: " + socket);
 			inStream = new DataInputStream(socket.getInputStream());
 			outStream = new DataOutputStream(socket.getOutputStream());
-			new Thread(this).start();
 			String donnee = "";
+			new Thread(this).start();
+
 			while(true)
 			{
-				donnee =  GestionnaireClient.br.readLine();
+				donnee = GestionnaireClient.bufferedReader.readLine();
 				envoyerDonnee(donnee);
 			}
 		}

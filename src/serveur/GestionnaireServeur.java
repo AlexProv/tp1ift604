@@ -1,6 +1,6 @@
 package serveur;
 
-import java.io.IOException;
+import java.io.*;
 import serveur.Communication.Serveur;
 
 public class GestionnaireServeur
@@ -11,8 +11,7 @@ public class GestionnaireServeur
 	 */
 	public static void main(String[] args)
 	{
-		// TODO Auto-generated method stub
-		System.out.println("allo! du serveur");
+		System.out.println("Initialisation du serveur");
 		
 		//int port = Integer.parseInt(args[0]);
 		int port1 = 9876,
@@ -20,12 +19,29 @@ public class GestionnaireServeur
 		try
 		{
 			Serveur serveur1 = new Serveur(port1);
-			//Serveur serveur2 = new Serveur(port2);	
+			//Serveur serveur2 = new Serveur(port2);
 		}
 		catch(IOException ioe)
 		{
-			
-		}
-		
-	}	
+			System.out.println(ioe);
+			ioe.printStackTrace();
+		}		
+	}
+	
+	public String lireFichier(String nomFichier)
+	{
+	   String contenu = null;
+	   File fichier = new File(nomFichier);
+	   try {
+	       FileReader reader = new FileReader(fichier);
+	       char[] chars = new char[(int) fichier.length()];
+	       reader.read(chars);
+	       contenu = new String(chars);
+	       reader.close();
+	   } catch (IOException ioe) {
+		   System.out.println(ioe);
+	       ioe.printStackTrace();
+	   }
+	   return contenu;
+	}
 }

@@ -3,7 +3,6 @@ package client;
 import java.io.*;
 
 import client.Communication.Client;
-import serveur.Communication.Serveur;
 
 public class GestionnaireClient {
 
@@ -11,19 +10,18 @@ public class GestionnaireClient {
 	 * @param args
 	 */
 	
-	public static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	public static BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 	
 	public static void main(String[] args) {
-		
-		// TODO Auto-generated method stub
-		System.out.print("IP (127.0.0.1 by default)? ");
+		System.out.println("Initialisation du client");
+		System.out.println("Specifiez l'adresse IP (127.0.0.1 par defaut): ");
 		String ip ="";
 		int port1 = 9876,
 			port2 = 9877;
 
 		try
 		{
-			ip = br.readLine();
+			ip = bufferedReader.readLine();
 			if(null ==ip || "" == ip)
 			{
 				ip = "127.0.0.1";
@@ -33,7 +31,8 @@ public class GestionnaireClient {
 		}
 		catch(IOException ioe)
 		{
-			System.out.println("allo! du client");			
+			System.out.println(ioe);
+			ioe.printStackTrace();			
 		}
 		
 	}
