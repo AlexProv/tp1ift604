@@ -20,9 +20,9 @@ public class GestionnaireServeur
 		try
 		{
 			Serveur serveur1 = new Serveur(port1);
-			Serveur serveur2 = new Serveur(port2);	
+			//Serveur serveur2 = new Serveur(port2);	
 		}
-		catch(IOException ie)
+		catch(IOException ioe)
 		{
 			
 		}

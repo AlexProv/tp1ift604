@@ -1,4 +1,4 @@
-package serveur;
+/*package serveur;
 import java.lang.reflect.Field;
 
 
@@ -170,6 +170,7 @@ public class Serializator {
 		       //give you the type information as well.
 
 		       System.out.println(field.getName());
-		   }*/
+		   }/
 		}
 }
+*/
