@@ -1,13 +1,19 @@
 package serveur.Communication;
 
-import java.io.*;
+import java.io.DataInputStream;
+import java.io.EOFException;
+import java.io.IOException;
 import java.net.Socket;
-import java.nio.*;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Observable;
+import java.util.Observer;
 
 import common.ListeDesMatchs;
 import common.Match;
 
-public class Message implements Runnable
+public class Message implements Runnable, Observer
 {
 	private Serveur serveur;
 	private Socket socket;
@@ -75,29 +81,44 @@ public class Message implements Runnable
 		}
 		else if (s.startsWith(GetEquipesMatch))
 		{
-			s = s.substring(GetListMatch.length());
-			int i = Integer.parseInt(s);
-			setFocusMatch(i);
+			try{
+				m.deleteObserver(this);
+				s = s.substring(GetListMatch.length());
+				int i = Integer.parseInt(s);
+				setFocusMatch(i);
+				
+				m = ListeDesMatchs.getListeDesMatchs().getMatch(FocusMatch);
+				m.addObserver(this);
+				answer = "EquipeMatch" + m.ToXml();
+			}
+			catch(Exception e )
+			{
+				e.printStackTrace();
+			}
 			
-			m = ListeDesMatchs.getListeDesMatchs().getMatch(FocusMatch);
-			answer = "EquipeMatch" + m.ToXml();
 		}
 		else if (s.startsWith(GetChrono))
 		{
 			s = s.substring(GetChrono.length());
+			answer = "Chrono" + m.getTempsPeriodeMillSeconde();
 			
 		}
 		else if (s.startsWith(GetPointage))
 		{
 			s = s.substring(GetPointage.length());
+			answer = "Pointage" + m.getButD() + " " + m.getButV();
 		}
 		else if (s.startsWith(GetPenalite))
 		{
 			s = s.substring(GetPenalite.length());
+			answer = "Penalite" + m.PenaliteToXml();
 		}
 		else if (s.startsWith(setBet))
 		{
 			s = s.substring(setBet.length());
+			String VouD = s.substring(1);
+			s = s.substring(1);
+			int mise = Integer.parseInt(s); 
 		}
 	}
 
@@ -129,5 +150,12 @@ public class Message implements Runnable
 		{
 			serveur.FermerConnection(socket);
 		}
+	}
+
+
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		//call client update 2 min
 	}
 }

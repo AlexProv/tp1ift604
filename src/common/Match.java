@@ -1,10 +1,12 @@
 package common;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Observable;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Match implements Runnable{
+public class Match extends Observable implements Runnable {
+	
 	private String equipeV;
 	private String equipeD;
 	private int butV;
@@ -21,6 +23,14 @@ public class Match implements Runnable{
 	private int id;
 	
 	
+	public long getTempsPeriodeMillSeconde() {
+		return tempsPeriodeMillSeconde;
+	}
+
+	public void setTempsPeriodeMillSeconde(long tempsPeriodeMillSeconde) {
+		this.tempsPeriodeMillSeconde = tempsPeriodeMillSeconde;
+	}
+
 	public Match(int numeroMatch, String equipeVis, String equipeDom){
 		equipeV = equipeVis;
 		equipeD = equipeDom;
@@ -125,6 +135,8 @@ public class Match implements Runnable{
 	public void alert()
 	{
 		//todo Alert Client trough observator ?
+		setChanged();
+        notifyObservers();
 	}
 		
 	public void ajouterPenalite(String equipe, int periode, double tempsPeriode, int tempsPenalite){
@@ -144,9 +156,14 @@ public class Match implements Runnable{
 		return SerializateurXML.objectToXML(this);
 	}
 	
-	static public Match XmlToBut(String s)
+	static public Match XmlToMatch(String s)
 	{
 		return (Match)SerializateurXML.xmlToObject(s);
+	}
+	
+	public String PenaliteToXml()
+	{
+		return SerializateurXML.objectToXML(listePenalite);
 	}
 	
 	@Override
