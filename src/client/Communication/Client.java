@@ -56,7 +56,7 @@ public class Client implements Runnable
 			while (true)
 			{
 				String message = inStream.readUTF();
-				System.out.println("envoye de: " + message + "\n");
+				System.out.println("Reception de: " + message + "\n");
 			}
 		}
 		catch(IOException ioe)

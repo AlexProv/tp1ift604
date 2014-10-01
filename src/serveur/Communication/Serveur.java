@@ -12,6 +12,7 @@ public class Serveur implements Runnable
 	private ThreadPool pool = new ThreadPool(42);//TODO: peut-etre pas 42... ou dequoi de dynamique
 	private ServerSocket socketServeur;
 
+	
 	public Serveur(int port) throws IOException
 	{
 		socketServeur = new ServerSocket(port);
@@ -43,14 +44,8 @@ public class Serveur implements Runnable
 			ioe.printStackTrace();
 		}
 	}
-
 	
-	/*Enumeration<DataOutputStream> getOutputStreamsEle()
-	{
-		return outputStreams.elements();
-	}*/
-	
-	void EnvoyeAClients(String message)
+	public void EnvoyeAClients(String message)
 	{
 		synchronized(outputStreams)
 		{
@@ -64,12 +59,13 @@ public class Serveur implements Runnable
 				catch(IOException ioe)
 				{
 					System.out.println(ioe);
+					ioe.printStackTrace();
 				}
 			}
 		}
 	}
 	
-	void FermerConnection(Socket socket)
+	public void FermerConnection(Socket socket)
 	{
 		synchronized(outputStreams)
 		{

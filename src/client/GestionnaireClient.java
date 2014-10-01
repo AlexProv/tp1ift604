@@ -6,10 +6,6 @@ import client.Communication.Client;
 
 public class GestionnaireClient {
 
-	/**
-	 * @param args
-	 */
-	
 	public static BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 	
 	public static void main(String[] args) {

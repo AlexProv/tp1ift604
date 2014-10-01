@@ -1,18 +1,18 @@
 package serveur;
 
 import java.io.*;
+import common.ListeDesMatchs;
+
 import serveur.Communication.Serveur;
 
 public class GestionnaireServeur
 {
-
-	/**
-	 * @param args
-	 */
+	public static BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+	
 	public static void main(String[] args)
 	{
 		System.out.println("Initialisation du serveur");
-		
+		PreLaunchSequence();
 		//int port = Integer.parseInt(args[0]);
 		int port1 = 9876,
 			port2 = 9877;
@@ -20,6 +20,13 @@ public class GestionnaireServeur
 		{
 			Serveur serveur1 = new Serveur(port1);
 			//Serveur serveur2 = new Serveur(port2);
+			String donnee = "";
+			while(true)
+			{
+				System.out.println("Message a envoyer: ");
+				donnee = bufferedReader.readLine();
+				serveur1.EnvoyeAClients(donnee);
+			}
 		}
 		catch(IOException ioe)
 		{
@@ -28,20 +35,42 @@ public class GestionnaireServeur
 		}		
 	}
 	
-	public String lireFichier(String nomFichier)
+	
+	
+	private static void PreLaunchSequence()
+	{
+		File file = new File("");
+		String path = file.getAbsolutePath();
+		ListeDesMatchs listMatch;
+		
+		try
+		{
+			String bdtext = lireFichier(path + "/bd.xml");
+			listMatch = ListeDesMatchs.XmlToListDesMatchs(bdtext);
+			ListeDesMatchs.setListeDesMatchs(listMatch);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			listMatch = ListeDesMatchs.getListeDesMatchs();
+		}
+	}
+	
+	/*String readFile(String path, Charset encoding) throws IOException 
+	{
+	  byte[] encoded = Files.readAllBytes(Paths.get(path));
+	  return new String(encoded, encoding);
+	}//*/
+	
+	private static String lireFichier(String nomFichier) throws IOException
 	{
 	   String contenu = null;
 	   File fichier = new File(nomFichier);
-	   try {
-	       FileReader reader = new FileReader(fichier);
-	       char[] chars = new char[(int) fichier.length()];
-	       reader.read(chars);
-	       contenu = new String(chars);
-	       reader.close();
-	   } catch (IOException ioe) {
-		   System.out.println(ioe);
-	       ioe.printStackTrace();
-	   }
+       FileReader reader = new FileReader(fichier);
+       char[] chars = new char[(int) fichier.length()];
+       reader.read(chars);
+       contenu = new String(chars);
+       reader.close();
 	   return contenu;
 	}
 }
