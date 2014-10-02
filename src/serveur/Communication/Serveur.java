@@ -44,7 +44,7 @@ public class Serveur implements Runnable
 		}
 	}
 	
-	public void EnvoyeAClients(String message)
+	public void EnvoyeTousClients(String message)
 	{
 		synchronized(outputStreams)
 		{
@@ -60,6 +60,24 @@ public class Serveur implements Runnable
 					System.out.println(ioe);
 					ioe.printStackTrace();
 				}
+			}
+		}
+	}
+	
+	public void EnvoyeAClient(Socket socket, String message)
+	{
+		DataOutputStream outStream;
+		synchronized(outputStreams)
+		{
+			outStream = outputStreams.get(socket);
+			try
+			{
+				outStream.writeUTF(message);
+			}
+			catch(IOException ioe)
+			{
+				System.out.println(ioe);
+				ioe.printStackTrace();
 			}
 		}
 	}

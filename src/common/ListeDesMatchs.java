@@ -29,6 +29,11 @@ public class ListeDesMatchs {
 		lm = this;
 	}
 	
+	public ListeDesMatchs(){
+		liste = new ArrayList<Match>();
+		lm = this;
+	}
+	
 	public int ajouterPartie(Match match){
 		if(liste.size() < nbMatchsMaximum)
 			liste.add(match);

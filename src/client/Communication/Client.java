@@ -25,9 +25,13 @@ public class Client implements Runnable
 			String donnee = "";
 			
 			new Thread(this).start();
-			
-			donnee = GestionnaireClient.bufferedReader.readLine();
-			envoyerDonnee(donnee);
+
+			envoyerDonnee("GetListMatch");
+			while(true)
+			{
+				donnee = GestionnaireClient.bufferedReader.readLine();
+				envoyerDonnee(donnee);
+			}
 		}
 		catch(IOException ioe)
 		{
@@ -39,28 +43,13 @@ public class Client implements Runnable
 	{
 		try
 		{
-			//socket.connect(endpoint);
-			
 			outStream.writeUTF(donnee);
-			socket.close();
 		}
 		catch(IOException ioe)
 		{
 			System.out.println(ioe);
 		}
 	}
-	
-	/*public void envoyerDonnee(String donnee)
-	{
-		try
-		{
-			outStream.writeUTF(donnee);
-		}
-		catch(IOException ioe)
-		{
-			System.out.println(ioe);
-		}
-	}//*/
 	
 	
 	public void run()

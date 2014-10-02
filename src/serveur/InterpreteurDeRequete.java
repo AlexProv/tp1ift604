@@ -24,7 +24,7 @@ public class InterpreteurDeRequete implements Observer
 			this.focusMatch = focusMatch;
 	}
 	
-	void ParseCommand(String s)
+	public String ParseCommand(String s)
 	{
 		String GetListMatch = "GetListMatch";
 		String GetEquipesMatch = "GetEquipesMatch";
@@ -83,6 +83,7 @@ public class InterpreteurDeRequete implements Observer
 			s = s.substring(1);
 			int mise = Integer.parseInt(s); 
 		}
+		return answer;
 	}
 	
 	@Override
