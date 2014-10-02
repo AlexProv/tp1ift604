@@ -3,16 +3,16 @@ package common;
 public class Penalite {
 	
 	private int numPeriode;
-	private double tempsPeriodeDebut;
-	private double tempsPeriodeFin;
+	private long tempsPeriodeDebutMs;
+	private long tempsPeriodeFinMs;
 	private String equipePen;
 	private int tempsPenalite;
 	
-	public Penalite(String equipe, int periode, double tempsPeriode, int tempsPenalite){
+	public Penalite(String equipe, int periode, long tempsPeriodeMs, int tempsPenalite){
 		equipePen = equipe;
 		numPeriode = periode;
-		tempsPeriodeDebut = tempsPeriode;
-		tempsPeriodeFin = tempsPeriode + tempsPenalite;
+		tempsPeriodeDebutMs = tempsPeriodeMs;
+		tempsPeriodeFinMs = tempsPeriodeMs + (tempsPenalite * 60000);
 	}
 	
 	public String ToXml()

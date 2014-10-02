@@ -6,13 +6,13 @@ public class But {
 	private String pointeur;
 	private String equipe;
 	private int numPeriode;
-	private double tempsPeriode;
+	private long tempsPeriodeMs;
 	
-	public But(String pointeur, String equipe, int numPeriode, double tempsPeriode){
+	public But(String pointeur, String equipe, int numPeriode, long tempsPeriodeMs){
 		this.pointeur = pointeur;
 		this.equipe = equipe;
 		this.numPeriode = numPeriode;
-		this.tempsPeriode = tempsPeriode;
+		this.tempsPeriodeMs = tempsPeriodeMs;
 	}
 	
 	public String ToXml()
