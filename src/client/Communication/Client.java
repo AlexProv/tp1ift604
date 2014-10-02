@@ -22,7 +22,7 @@ public class Client implements Runnable
 			outStream = new DataOutputStream(socket.getOutputStream());
 			String donnee = "";
 			new Thread(this).start();
-
+			envoyerDonnee("GetListMatch");
 			while(true)
 			{
 				donnee = GestionnaireClient.bufferedReader.readLine();

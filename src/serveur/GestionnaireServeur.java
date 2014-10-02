@@ -1,8 +1,10 @@
 package serveur;
 
 import java.io.*;
-import common.ListeDesMatchs;
 
+import common.ListeDesMatchs;
+import common.ListeDesMatchsSimp;
+import common.Match;
 import serveur.Communication.Serveur;
 
 public class GestionnaireServeur
@@ -25,7 +27,7 @@ public class GestionnaireServeur
 			{
 				System.out.println("Message a envoyer: ");
 				donnee = bufferedReader.readLine();
-				serveur1.EnvoyeAClients(donnee);
+				serveur1.EnvoyeTousClients(donnee);
 			}
 		}
 		catch(IOException ioe)
@@ -41,13 +43,20 @@ public class GestionnaireServeur
 	{
 		File file = new File("");
 		String path = file.getAbsolutePath();
-		ListeDesMatchs listMatch;
+		ListeDesMatchs listMatch = new ListeDesMatchs();
 		
 		try
 		{
 			String bdtext = lireFichier(path + "/bd.xml");
-			listMatch = ListeDesMatchs.XmlToListDesMatchs(bdtext);
-			ListeDesMatchs.setListeDesMatchs(listMatch);
+			if(bdtext != null){
+				listMatch = ListeDesMatchs.XmlToListDesMatchs(bdtext);
+				ListeDesMatchs.setListeDesMatchs(listMatch);
+			}
+			else{
+				listMatch.ajouterPartie(new Match(1, "Montreal", "Boston"));
+				listMatch.ajouterPartie(new Match(2, "Washington", "Ottawa"));
+				ListeDesMatchs.setListeDesMatchs(listMatch);
+			}
 		}
 		catch(Exception e)
 		{
@@ -66,7 +75,9 @@ public class GestionnaireServeur
 	{
 	   String contenu = null;
 	   File fichier = new File(nomFichier);
-       FileReader reader = new FileReader(fichier);
+	   if(!fichier.exists())
+		   return null;
+	   FileReader reader = new FileReader(fichier);
        char[] chars = new char[(int) fichier.length()];
        reader.read(chars);
        contenu = new String(chars);
