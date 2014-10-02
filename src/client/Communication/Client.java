@@ -3,6 +3,8 @@ package client.Communication;
 import java.io.*;
 import java.net.Socket;
 
+import com.sun.corba.se.impl.legacy.connection.SocketFactoryContactInfoImpl;
+
 import client.GestionnaireClient;
 
 public class Client implements Runnable
@@ -21,13 +23,11 @@ public class Client implements Runnable
 			inStream = new DataInputStream(socket.getInputStream());
 			outStream = new DataOutputStream(socket.getOutputStream());
 			String donnee = "";
+			
 			new Thread(this).start();
-
-			while(true)
-			{
-				donnee = GestionnaireClient.bufferedReader.readLine();
-				envoyerDonnee(donnee);
-			}
+			
+			donnee = GestionnaireClient.bufferedReader.readLine();
+			envoyerDonnee(donnee);
 		}
 		catch(IOException ioe)
 		{
@@ -35,8 +35,22 @@ public class Client implements Runnable
 		}
 	}
 	
+	public void envoyerDonnee(String donnee)
+	{
+		try
+		{
+			//socket.connect(endpoint);
+			
+			outStream.writeUTF(donnee);
+			socket.close();
+		}
+		catch(IOException ioe)
+		{
+			System.out.println(ioe);
+		}
+	}
 	
-	private void envoyerDonnee(String donnee)
+	/*public void envoyerDonnee(String donnee)
 	{
 		try
 		{
@@ -46,7 +60,7 @@ public class Client implements Runnable
 		{
 			System.out.println(ioe);
 		}
-	}
+	}//*/
 	
 	
 	public void run()

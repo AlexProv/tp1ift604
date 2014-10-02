@@ -10,17 +10,12 @@ public class Message implements Runnable
 	private Serveur serveur;
 	private Socket socket;
 	private int FocusMatch;
-	
-	public int getFocusMatch() {
-		return FocusMatch;
-	}
 
 
 	public Message(Serveur serveur, Socket socket) 
 	{
 		this.serveur = serveur;
 		this.socket = socket;
-		this.FocusMatch = -1;
 	}
 
 	

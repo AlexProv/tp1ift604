@@ -6,22 +6,22 @@ import java.util.Observer;
 import common.ListeDesMatchs;
 import common.Match;
 
-public class GestionnaireRequete implements Observer
+public class InterpreteurDeRequete implements Observer
 {
-	private int FocusMatch;
+	private int focusMatch;
 
-	public GestionnaireRequete()
+	public InterpreteurDeRequete()
 	{
-		FocusMatch = -1;
+		focusMatch = -1;
 	}
 
 	public int getFocusMatch() {
-		return FocusMatch;
+		return focusMatch;
 	}
 	
 	private void setFocusMatch(int focusMatch) {
 		if(focusMatch > -1)
-			FocusMatch = focusMatch;
+			this.focusMatch = focusMatch;
 	}
 	
 	void ParseCommand(String s)
@@ -35,7 +35,7 @@ public class GestionnaireRequete implements Observer
 		
 		String answer = "";
 		
-		Match m = ListeDesMatchs.getListeDesMatchs().getMatch(FocusMatch);
+		Match m = ListeDesMatchs.getListeDesMatchs().getMatch(focusMatch);
 		
 		if(s.startsWith(GetListMatch))
 		{
@@ -50,7 +50,7 @@ public class GestionnaireRequete implements Observer
 				int i = Integer.parseInt(s);
 				setFocusMatch(i);
 				
-				m = ListeDesMatchs.getListeDesMatchs().getMatch(FocusMatch);
+				m = ListeDesMatchs.getListeDesMatchs().getMatch(focusMatch);
 				m.addObserver(this);
 				answer = "EquipeMatch" + m.ToXml();
 			}

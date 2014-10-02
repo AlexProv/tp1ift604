@@ -11,7 +11,6 @@ public class Serveur implements Runnable
 	private Hashtable<Socket, DataOutputStream> outputStreams = new Hashtable<Socket, DataOutputStream>();
 	private ThreadPool pool = new ThreadPool(42);//TODO: peut-etre pas 42... ou dequoi de dynamique
 	private ServerSocket socketServeur;
-
 	
 	public Serveur(int port) throws IOException
 	{
@@ -49,9 +48,9 @@ public class Serveur implements Runnable
 	{
 		synchronized(outputStreams)
 		{
-			for (Enumeration e = outputStreams.elements(); e.hasMoreElements();)
+			for (Enumeration<DataOutputStream> e = outputStreams.elements(); e.hasMoreElements();)
 			{
-				DataOutputStream outStream = (DataOutputStream)e.nextElement();
+				DataOutputStream outStream = e.nextElement();
 				try
 				{
 					outStream.writeUTF(message);

@@ -12,8 +12,7 @@ public class GestionnaireServeur
 	public static void main(String[] args)
 	{
 		System.out.println("Initialisation du serveur");
-		PreLaunchSequence();
-		//int port = Integer.parseInt(args[0]);
+		//PreLaunchSequence();
 		int port1 = 9876,
 			port2 = 9877;
 		try
@@ -49,18 +48,12 @@ public class GestionnaireServeur
 			listMatch = ListeDesMatchs.XmlToListDesMatchs(bdtext);
 			ListeDesMatchs.setListeDesMatchs(listMatch);
 		}
-		catch(Exception e)
+		catch(IOException ioe)
 		{
-			e.printStackTrace();
+			ioe.printStackTrace();
 			listMatch = ListeDesMatchs.getListeDesMatchs();
 		}
 	}
-	
-	/*String readFile(String path, Charset encoding) throws IOException 
-	{
-	  byte[] encoded = Files.readAllBytes(Paths.get(path));
-	  return new String(encoded, encoding);
-	}//*/
 	
 	private static String lireFichier(String nomFichier) throws IOException
 	{

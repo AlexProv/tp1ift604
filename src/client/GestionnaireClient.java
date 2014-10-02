@@ -18,12 +18,12 @@ public class GestionnaireClient {
 		try
 		{
 			ip = bufferedReader.readLine();
-			if(null ==ip || "" == ip)
+			if(ip == null || ip == "")
 			{
 				ip = "127.0.0.1";
 			}
 			
-			Client client = new Client(ip, port1);	
+			Client client = new Client(ip, port1);
 		}
 		catch(IOException ioe)
 		{
