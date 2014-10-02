@@ -58,6 +58,13 @@ public class ListeDesMatchs {
 		return null;
 	}
 	
+	public ArrayList<Match> getAllMatchs(){
+		return liste;
+	}
+	
+	public static int getNextId(){
+		return lm.liste.size();
+	}
 	
 	public String ToXml()
 	{

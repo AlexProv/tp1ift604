@@ -3,6 +3,7 @@ package client.Communication;
 import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import serveur.InterpreteurDeRequete;
 
 public class Client //implements Runnable
 {
@@ -11,7 +12,8 @@ public class Client //implements Runnable
 	private InetSocketAddress inetSocketAddress;
 	private Socket socket;
 	private String reponseServeur;
-	private final long ANSWER_TIMEOUT = 2000; //TODO: en fr
+	private final long REPONSE_TIMEOUT = 2000;
+	private InterpreteurDeRequete interpreteurRequete;
 	
 	public Client(String host, int port) throws IOException
 	{
@@ -43,14 +45,13 @@ public class Client //implements Runnable
 					try {
 						reponseServeur = inStream.readUTF();
 					} catch (IOException ioe) {
-						//TODO: mettre en fr. ++
-						System.out.println(ioe + " ...while waiting for an answer from the server.");
+						System.out.println(ioe + " ... en attendant la reponse du serveur.");
 						ioe.printStackTrace();
 					}
 			    }
 			};
 			t.start();
-			t.join(ANSWER_TIMEOUT);
+			t.join(REPONSE_TIMEOUT);
 			
 			System.out.println("Reception de: " + reponse + "\n");
 			socket.close();
@@ -58,7 +59,7 @@ public class Client //implements Runnable
 		catch (InterruptedException ie)
 		{
 			reponseServeur = "ie";
-			System.out.println("Timeout while waiting for an answer from the server.");
+			System.out.println("Timeout en attendant la reponse du serveur.");
 		}
 		catch(IOException ioe)
 		{
@@ -89,7 +90,14 @@ public class Client //implements Runnable
 			while (true)
 			{
 				String message = inStream.readUTF();
+				message = message.substring(9);
 				System.out.println("Reception de: " + message + "\n");
+				ListeDesMatchs ldm = ListeDesMatchs.XmlToListDesMatchs(message);
+				System.out.println("Partie disponible : ");
+				for(Match match : ldm.getAllMatchs()){
+					System.out.println(match.getEquipeV() + " " + match.getEquipeD());
+				}
+				
 			}
 		}
 		catch(IOException ioe)

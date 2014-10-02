@@ -88,7 +88,6 @@ public class InterpreteurDeRequete implements Observer
 	
 	@Override
 	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
 		//call client update 2 min
 	}
 }

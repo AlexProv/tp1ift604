@@ -11,10 +11,12 @@ public class Serveur implements Runnable
 	private Hashtable<Socket, DataOutputStream> outputStreams = new Hashtable<Socket, DataOutputStream>();
 	private ThreadPool pool = new ThreadPool(42);//TODO: peut-etre pas 42... ou dequoi de dynamique
 	private ServerSocket socketServeur;
+
 	
 	public Serveur(int port) throws IOException
 	{
 		socketServeur = new ServerSocket(port);
+		socketServeur.setSoTimeout(3000);//Debloquer le serveur quand personne ne se connecte
 		new Thread(this).start();
 	}
 	
@@ -23,34 +25,33 @@ public class Serveur implements Runnable
 		Message message;
 		Socket socket;
 
-		try
-		{
 			while(true)
 			{
-				synchronized (outputStreams)
-				{
-					socket = socketServeur.accept();
-					System.out.println("Connection de " + socket);
-					outputStreams.put(socket, new DataOutputStream(socket.getOutputStream()));
-					message = new Message(this, socket);
-					pool.addTask(message);
+				try{
+					synchronized (outputStreams)
+					{
+						socket = socketServeur.accept();
+						System.out.println("Connection de " + socket);
+						outputStreams.put(socket, new DataOutputStream(socket.getOutputStream()));
+						message = new Message(this, socket);
+						pool.addTask(message);
+					}
+				} catch (SocketTimeoutException s){
+					System.out.println("Timeout waiting for client...");
+				} catch (IOException e) {
+					e.printStackTrace();
+					break;
 				}
 			}
-		}
-		catch(IOException ioe)
-		{
-			System.out.println(ioe);
-			ioe.printStackTrace();
-		}
 	}
 	
 	public void EnvoyeTousClients(String message)
 	{
 		synchronized(outputStreams)
 		{
-			for (Enumeration<DataOutputStream> e = outputStreams.elements(); e.hasMoreElements();)
+			for (Enumeration e = outputStreams.elements(); e.hasMoreElements();)
 			{
-				DataOutputStream outStream = e.nextElement();
+				DataOutputStream outStream = (DataOutputStream)e.nextElement();
 				try
 				{
 					outStream.writeUTF(message);
