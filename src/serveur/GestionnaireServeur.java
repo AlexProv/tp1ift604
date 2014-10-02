@@ -3,7 +3,6 @@ package serveur;
 import java.io.*;
 
 import common.ListeDesMatchs;
-import common.ListeDesMatchsSimp;
 import common.Match;
 import serveur.Communication.Serveur;
 
@@ -23,7 +22,7 @@ public class GestionnaireServeur
 			//Serveur serveur2 = new Serveur(port2); Pour possibilite d'UDP et TCP
 			int choix = 0;
 			String donnee = "";
-			System.out.println("Voici les options a faire sur le serveur : \n1. Ajouter une partie\n2. Ajouter un but\n3. Ajouter une penalite");
+			System.out.println("Voici les options a faire sur le serveur : \n1. Ajouter une partie\n2. Ajouter un but\n3. Ajouter une penalite\n4. Sauvegarder XML");
 			while(true)
 			{
 				if(bufferedReader.ready()){
@@ -39,9 +38,28 @@ public class GestionnaireServeur
 							System.out.println("Ajouter un but pour quel partie?");
 							choix = Integer.parseInt(bufferedReader.readLine());
 							Match match = ListeDesMatchs.getListeDesMatchs().getMatch(choix);
-							//match.ajouterBut(compteur, equipe, periode, tempsPeriode);
+							System.out.println("Quel est le joueur qui a marque?");
+							donnee = bufferedReader.readLine();
+							System.out.println("Quel equipe (V ou R)?");
+							if(bufferedReader.readLine() == "V")
+								match.ajouterBut(donnee, match.getEquipeV(), match.getNumPeriode(), match.getTempsPeriodeMillSeconde());
+							else
+								match.ajouterBut(donnee, match.getEquipeD(), match.getNumPeriode(), match.getTempsPeriodeMillSeconde());
 							break;
 						case 3:
+							System.out.println("Ajouter une penalite pour quel partie?");
+							choix = Integer.parseInt(bufferedReader.readLine());
+							match = ListeDesMatchs.getListeDesMatchs().getMatch(choix);
+							System.out.println("Combien de minutes?");
+							choix = Integer.parseInt(bufferedReader.readLine());
+							System.out.println("Quel equipe (V ou R)?");
+							if(bufferedReader.readLine() == "V")
+								match.ajouterPenalite(match.getEquipeV(), match.getNumPeriode(), match.getTempsPeriodeMillSeconde(), choix);
+							else
+								match.ajouterPenalite(match.getEquipeD(), match.getNumPeriode(), match.getTempsPeriodeMillSeconde(), choix);
+							break;
+						case 4:
+							sauvegarderFichier();
 							break;
 					}
 				}
@@ -71,8 +89,8 @@ public class GestionnaireServeur
 				ListeDesMatchs.setListeDesMatchs(listMatch);
 			}
 			else{
-				listMatch.ajouterPartie(new Match(1, "Montreal", "Boston"));
-				listMatch.ajouterPartie(new Match(2, "Washington", "Ottawa"));
+				listMatch.ajouterPartie(new Match(ListeDesMatchs.getNextId(), "Montreal", "Boston"));
+				listMatch.ajouterPartie(new Match(ListeDesMatchs.getNextId(), "Washington", "Ottawa"));
 				ListeDesMatchs.setListeDesMatchs(listMatch);
 			}
 		}
@@ -81,6 +99,15 @@ public class GestionnaireServeur
 			ioe.printStackTrace();
 			listMatch = ListeDesMatchs.getListeDesMatchs();
 		}
+	}
+	
+	private static void sauvegarderFichier() throws FileNotFoundException, UnsupportedEncodingException{
+		File file = new File("");
+		String path = file.getAbsolutePath() + "/bd.xml";
+		String data = ListeDesMatchs.getListeDesMatchs().ToXml();
+		PrintWriter writer = new PrintWriter(path, "UTF-8");
+		writer.print(data);
+		writer.close();
 	}
 	
 	private static String lireFichier(String nomFichier) throws IOException
