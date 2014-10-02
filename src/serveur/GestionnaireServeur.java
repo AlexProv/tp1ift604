@@ -14,19 +14,38 @@ public class GestionnaireServeur
 	public static void main(String[] args)
 	{
 		System.out.println("Initialisation du serveur");
-		//PreLaunchSequence();
+		PreLaunchSequence();
 		int port1 = 9876,
 			port2 = 9877;
 		try
 		{
 			Serveur serveur1 = new Serveur(port1);
-			//Serveur serveur2 = new Serveur(port2);
+			//Serveur serveur2 = new Serveur(port2); Pour possibilite d'UDP et TCP
+			int choix = 0;
 			String donnee = "";
+			System.out.println("Voici les options a faire sur le serveur : \n1. Ajouter une partie\n2. Ajouter un but\n3. Ajouter une penalite");
 			while(true)
 			{
-				System.out.println("Message a envoyer: ");
-				donnee = bufferedReader.readLine();
-				serveur1.EnvoyeTousClients(donnee);
+				if(bufferedReader.ready()){
+					choix = Integer.parseInt(bufferedReader.readLine());
+					switch(choix){
+						case 1:
+							System.out.println("Quel est le nom de l'equipe visiteur?");
+							donnee = bufferedReader.readLine();
+							System.out.println("Quel est le nom de l'equipe receveur?");
+							ListeDesMatchs.getListeDesMatchs().ajouterPartie(new Match(ListeDesMatchs.getNextId(), donnee, bufferedReader.readLine()));
+							break;
+						case 2:
+							System.out.println("Ajouter un but pour quel partie?");
+							choix = Integer.parseInt(bufferedReader.readLine());
+							Match match = ListeDesMatchs.getListeDesMatchs().getMatch(choix);
+							//match.ajouterBut(compteur, equipe, periode, tempsPeriode);
+							break;
+						case 3:
+							break;
+					}
+				}
+				//serveur1.EnvoyeTousClients(donnee);
 			}
 		}
 		catch(IOException ioe)
