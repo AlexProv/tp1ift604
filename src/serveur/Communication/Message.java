@@ -5,23 +5,19 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.net.Socket;
 
-import com.sun.corba.se.spi.activation.Server;
-
-import serveur.GestionnaireRequete;
+import serveur.InterpreteurDeRequete;
 
 public class Message implements Runnable
 {
 	private Serveur serveur;
 	private Socket socket;
-	private GestionnaireRequete gestionnaireRequete;
-	private int FocusMatch;
-
+	private InterpreteurDeRequete interpreteurDeRequete;
 
 	public Message(Serveur serveur, Socket socket) 
 	{
 		this.serveur = serveur;
 		this.socket = socket;
-		this.gestionnaireRequete = new GestionnaireRequete();
+		interpreteurDeRequete = new InterpreteurDeRequete();
 	}
 
 	
@@ -33,7 +29,7 @@ public class Message implements Runnable
 				DataInputStream inStream = new DataInputStream(socket.getInputStream());
 				String message = inStream.readUTF();
 				System.out.println( "reception du message -- " + message + " -- du socket: " + socket);
-				String answer = gestionnaireRequete.ParseCommand(message);
+				String answer = interpreteurDeRequete.ParseCommand(message);
 				serveur.EnvoyeAClient(socket, answer);
 				System.out.println(answer);
 				//TODO: la gestion des messages a faire ici..

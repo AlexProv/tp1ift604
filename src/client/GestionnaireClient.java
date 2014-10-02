@@ -1,7 +1,6 @@
 package client;
 
 import java.io.*;
-
 import client.Communication.Client;
 
 public class GestionnaireClient {
@@ -24,6 +23,14 @@ public class GestionnaireClient {
 			}
 			
 			Client client = new Client(ip, port1);
+			String reponse = "";
+			
+			while(reponse == "" || reponse == "ioe" || reponse == "ie")
+			{
+				System.out.println("Envoye de la requete: " + "GetListMatch" + " ...");
+				reponse = client.envoyerRequete("GetListMatch");
+			}
+			
 		}
 		catch(IOException ioe)
 		{
