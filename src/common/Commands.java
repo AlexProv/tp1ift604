@@ -6,7 +6,11 @@ public enum Commands {
 	GET_CHRONO("GetChrono"),
 	GET_POINTAGE("GetPointage"),
 	GET_PENALITE("GetPenalite"),
-	SET_BET("setBet");
+	SET_BET("setBet"),
+	EQUIPE_MATCH("EquipeMatch"),
+	LIST_MATCH("ListMatch"),
+	CHRONO("Chrono");
+	
 	
 	private final String value;
 	
