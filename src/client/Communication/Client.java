@@ -14,11 +14,16 @@ public class Client //implements Runnable
 	private String reponseServeur;
 	private final long REPONSE_TIMEOUT = 2000;
 	private InterpreteurDeRequete interpreteurRequete;
+	private String host;
+	private int port;
+	
 	
 	public Client(String host, int port) throws IOException
 	{
 		try
 		{
+			this.host = host;
+			this.port = port;
 			inetSocketAddress = new InetSocketAddress(host, port);
 			socket = new Socket(host, port);
 			System.out.println("Connection a: " + socket);
