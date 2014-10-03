@@ -9,7 +9,7 @@ import common.ListeDesMatchs;
 import common.Match;
 import common.Penalite;
 
-public class InterpreteurDeRequete implements Observer
+public class InterpreteurDeRequete// implements Observer
 {
 	
 
@@ -37,12 +37,13 @@ public class InterpreteurDeRequete implements Observer
 				int matchID = Integer.parseInt(requestParams[1]);
 				if(requestParams.length == 3){
 					int previousmatchID = Integer.parseInt(requestParams[2]);
-					ListeDesMatchs.getListeDesMatchs().getMatch(previousmatchID).deleteObserver(this);
+					//ListeDesMatchs.getListeDesMatchs().getMatch(previousmatchID).deleteObserver(this);
 				}
 				
 				m = ListeDesMatchs.getListeDesMatchs().getMatch(matchID);
 				
-				m.addObserver(this);
+				//m.addObserver(this);
+				
 				answer = "EquipeMatch|" + m.ToJson();
 			}
 			catch(Exception e )
@@ -89,8 +90,8 @@ public class InterpreteurDeRequete implements Observer
 		return answer;
 	}
 	
-	@Override
-	public void update(Observable o, Object arg) {
+	//@Override
+	//public void update(Observable o, Object arg) {
 		//call client update 2 min
-	}
+	//}
 }
