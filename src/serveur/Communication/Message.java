@@ -11,15 +11,15 @@ public class Message implements Runnable
 {
 	private Serveur serveur;
 	private Socket socket;
+
 	private InterpreteurDeRequete interpreteurRequete;
-	private int FocusMatch;
 
 
 	public Message(Serveur serveur, Socket socket) 
 	{
 		this.serveur = serveur;
 		this.socket = socket;
-		this.interpreteurRequete = new InterpreteurDeRequete();
+		interpreteurRequete = new InterpreteurDeRequete();
 	}
 
 	

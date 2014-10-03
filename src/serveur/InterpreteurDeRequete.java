@@ -3,6 +3,7 @@ package serveur;
 import java.util.Observable;
 import java.util.Observer;
 
+import common.Commands;
 import common.ListeDesMatchs;
 import common.Match;
 
@@ -26,27 +27,20 @@ public class InterpreteurDeRequete implements Observer
 	
 	public String ParseCommand(String s)
 	{
-		String GetListMatch = "GetListMatch";
-		String GetEquipesMatch = "GetEquipesMatch";
-		String GetChrono = "GetChrono";
-		String GetPointage = "GetPointage";
-		String GetPenalite = "GetPenalite";
-		String setBet = "setBet";
-		
 		String answer = "";
 		
 		Match m = ListeDesMatchs.getListeDesMatchs().getMatch(focusMatch);
 		
-		if(s.startsWith(GetListMatch))
+		if(s.startsWith(Commands.GET_LIST_MATCH.toString()))
 		{
-			s = s.substring(GetListMatch.length());
+			s = s.substring(Commands.GET_LIST_MATCH.toString().length());
 			answer = "ListMatch" + ListeDesMatchs.getListeDesMatchs().ToJson();
 		}
-		else if (s.startsWith(GetEquipesMatch))
+		else if (s.startsWith(Commands.GET_EQUIPES_MATCH.toString()))
 		{
 			try{
 				m.deleteObserver(this);
-				s = s.substring(GetListMatch.length());
+				s = s.substring(Commands.GET_EQUIPES_MATCH.toString().length());
 				int i = Integer.parseInt(s);
 				setFocusMatch(i);
 				
@@ -58,27 +52,26 @@ public class InterpreteurDeRequete implements Observer
 			{
 				e.printStackTrace();
 			}
-			
 		}
-		else if (s.startsWith(GetChrono))
+		else if (s.startsWith(Commands.GET_CHRONO.toString()))
 		{
-			s = s.substring(GetChrono.length());
+			s = s.substring(Commands.GET_CHRONO.toString().length());
 			answer = "Chrono" + m.getTempsPeriodeMillSeconde();
 			
 		}
-		else if (s.startsWith(GetPointage))
+		else if (s.startsWith(Commands.GET_POINTAGE.toString()))
 		{
-			s = s.substring(GetPointage.length());
+			s = s.substring(Commands.GET_POINTAGE.toString().length());
 			answer = "Pointage" + m.getButD() + " " + m.getButV();
 		}
-		else if (s.startsWith(GetPenalite))
+		else if (s.startsWith(Commands.GET_PENALITE.toString()))
 		{
-			s = s.substring(GetPenalite.length());
+			s = s.substring(Commands.GET_PENALITE.toString().length());
 			answer = "Penalite";
 		}
-		else if (s.startsWith(setBet))
+		else if (s.startsWith(Commands.SET_BET.toString()))
 		{
-			s = s.substring(setBet.length());
+			s = s.substring(Commands.SET_BET.toString().length());
 			String VouD = s.substring(1);
 			s = s.substring(1);
 			int mise = Integer.parseInt(s); 
@@ -88,7 +81,6 @@ public class InterpreteurDeRequete implements Observer
 	
 	@Override
 	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
 		//call client update 2 min
 	}
 }

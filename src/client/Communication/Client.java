@@ -1,49 +1,74 @@
 package client.Communication;
 
 import java.io.*;
+import java.net.InetSocketAddress;
 import java.net.Socket;
-
 import serveur.InterpreteurDeRequete;
 
-import com.sun.corba.se.impl.legacy.connection.SocketFactoryContactInfoImpl;
-
-import common.ListeDesMatchs;
-import common.Match;
-import client.GestionnaireClient;
-
-public class Client implements Runnable
+public class Client //implements Runnable
 {
-	private Socket socket;
-	private DataOutputStream outStream;
 	private DataInputStream inStream;
+	private DataOutputStream outStream;
+	private InetSocketAddress inetSocketAddress;
+	private Socket socket;
+	private String reponseServeur;
+	private final long REPONSE_TIMEOUT = 2000;
 	private InterpreteurDeRequete interpreteurRequete;
-	
 	
 	public Client(String host, int port) throws IOException
 	{
 		try
 		{
+			inetSocketAddress = new InetSocketAddress(host, port);
 			socket = new Socket(host, port);
 			System.out.println("Connection a: " + socket);
-			inStream = new DataInputStream(socket.getInputStream());
-			outStream = new DataOutputStream(socket.getOutputStream());
-			String donnee = "";
-			
-			new Thread(this).start();
-
-			envoyerDonnee("GetListMatch");
-			while(true)
-			{
-				if(GestionnaireClient.bufferedReader.ready()){
-					donnee = GestionnaireClient.bufferedReader.readLine();
-					envoyerDonnee(donnee);
-				}
-			}
+			socket.close();
 		}
 		catch(IOException ioe)
 		{
 			System.out.println(ioe);
 		}
+	}
+	
+	public String envoyerRequete(String cmd)
+	{
+		try
+		{
+			String reponse = "";
+			socket = new Socket(host, port);
+			//socket.connect(inetSocketAddress);
+			inStream = new DataInputStream(socket.getInputStream());
+			outStream = new DataOutputStream(socket.getOutputStream());
+
+			outStream.writeUTF(cmd);
+			Thread t = new Thread() {
+			    public void run() {
+					try {
+						reponseServeur = inStream.readUTF();
+					} catch (IOException ioe) {
+						System.out.println(ioe + " ... en attendant la reponse du serveur.");
+						ioe.printStackTrace();
+					}
+			    }
+			};
+			t.start();
+			t.join(REPONSE_TIMEOUT);
+			
+			System.out.println("Reception de: " + reponse + "\n");
+			socket.close();
+		}
+		catch (InterruptedException ie)
+		{
+			reponseServeur = "ie";
+			System.out.println("Timeout en attendant la reponse du serveur.");
+		}
+		catch(IOException ioe)
+		{
+			reponseServeur = "ioe";
+			System.out.println(ioe);
+		}
+		
+		return reponseServeur;
 	}
 	
 	public void envoyerDonnee(String donnee)
@@ -59,7 +84,7 @@ public class Client implements Runnable
 	}
 	
 	
-	public void run()
+	/*public void run()
 	{
 		try
 		{
@@ -80,5 +105,5 @@ public class Client implements Runnable
 		{
 			System.out.println(ioe);
 		}
-	}
+	}//*/
 }
