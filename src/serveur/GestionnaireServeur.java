@@ -91,6 +91,8 @@ public class GestionnaireServeur
 				listMatch.ajouterPartie(new Match(ListeDesMatchs.getNextId(), "Washington", "Ottawa"));
 				ListeDesMatchs.setListeDesMatchs(listMatch);
 			}
+			ListeDesMatchs.getListeDesMatchs().startClocks();
+			
 		}
 		catch(IOException ioe)
 		{

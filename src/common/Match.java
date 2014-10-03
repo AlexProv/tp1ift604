@@ -25,7 +25,8 @@ public class Match extends Observable implements Runnable {
 	
 	
 	public long getTempsPeriodeMillSeconde() {
-		tempsPeriodeMillSeconde = System.currentTimeMillis() - stopTime;
+		//tempsPeriodeMillSeconde = System.currentTimeMillis() - stopTime;
+		//stopTime = System.currentTimeMillis();
 		return tempsPeriodeMillSeconde;
 	}
 
@@ -56,9 +57,12 @@ public class Match extends Observable implements Runnable {
 		timerAlert.scheduleAtFixedRate(alertTimer, 2*60*1000,2*60*1000);
 
 
-		new Thread(this).start();
 	}
 	
+	public void startClock()
+	{
+		new Thread(this).start();
+	}
 	
 	public String getEquipeV() {
 		return equipeV;
@@ -156,8 +160,14 @@ public class Match extends Observable implements Runnable {
 	
 	@Override
 	public void run() {
-		tempsPeriodeMillSeconde += System.currentTimeMillis() - stopTime;
-		stopTime = System.currentTimeMillis();
+		while(true)//va besoion d'etre modifier a match done
+		{
+			if(System.currentTimeMillis() != stopTime )
+			{
+				tempsPeriodeMillSeconde += System.currentTimeMillis() - stopTime ;
+				stopTime = System.currentTimeMillis();
+			}
+		}
 	}
 	
 
@@ -191,6 +201,7 @@ public class Match extends Observable implements Runnable {
 		
 		@Override
 		public void run() {
+			
 			nbAlert +=1;
 			match.alert();
 			if(nbAlert >=10)

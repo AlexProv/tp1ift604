@@ -1,21 +1,15 @@
 package serveur;
 
-import java.util.ArrayList;
-import java.util.Observable;
-import java.util.Observer;
-
 import common.Commands;
 import common.ListeDesMatchs;
 import common.Match;
-import common.Penalite;
 
 public class InterpreteurDeRequete// implements Observer
 {
-	
 
 	public InterpreteurDeRequete()
 	{
-	
+ 
 	}
 	
 	public String ParseCommand(String s)

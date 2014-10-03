@@ -4,6 +4,9 @@ import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.util.TimerTask;
+
+import common.Match;
 
 import serveur.InterpreteurDeRequete;
 
@@ -70,28 +73,6 @@ public class Client //implements Runnable
 			System.out.println(ioe);
 		}
 	}
+	 
 	
-	
-	/*public void run()
-	{
-		try
-		{
-			while (true)
-			{
-				String message = inStream.readUTF();
-				message = message.substring(9);
-				System.out.println("Reception de: " + message + "\n");
-				ListeDesMatchs ldm = ListeDesMatchs.JsonToListDesMatchs(message);
-				System.out.println("Partie disponible : ");
-				for(Match match : ldm.getAllMatchs()){
-					System.out.println(match.getEquipeV() + " " + match.getEquipeD());
-				}
-				
-			}
-		}
-		catch(IOException ioe)
-		{
-			System.out.println(ioe);
-		}
-	}//*/
 }

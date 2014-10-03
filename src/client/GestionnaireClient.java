@@ -25,11 +25,10 @@ public class GestionnaireClient {
 			}
 			
 			Client client = new Client(ip, port1);
-			InitialiseurDeRequete idr = new InitialiseurDeRequete();
+			InitialiseurDeRequete idr = new InitialiseurDeRequete(client);
 			String reponse = "";
 			String requete = "";
 			
-			//
 			System.out.println("Bienvenue sur l'application HockeyLive!");
 			System.out.println("Voici la liste des matchs (ID, Equipe Receveur, Equipe Visiteur):");
 			 

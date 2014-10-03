@@ -38,7 +38,9 @@ public class ListeDesMatchs {
 	
 	public int ajouterPartie(Match match){
 		if(liste.size() < nbMatchsMaximum)
+		{
 			liste.add(match);
+		}
 		else
 			System.out.print("Match maximum atteint");
 		return match.getId() + 1;
@@ -57,6 +59,14 @@ public class ListeDesMatchs {
 		return liste;
 	}
 	
+	public void startClocks()
+	{
+		for(Match m : liste)
+		{
+			m.startClock();
+		}
+	}
+	
 	public static int getNextId(){
 		return lm.liste.size();
 	}
@@ -68,6 +78,8 @@ public class ListeDesMatchs {
 	
 	static public ListeDesMatchs JsonToListDesMatchs(String s)
 	{
-		return (ListeDesMatchs)SerializateurJson.jsonToObject(s,ListeDesMatchs.class);
+		ListeDesMatchs lm = (ListeDesMatchs)SerializateurJson.jsonToObject(s,ListeDesMatchs.class);
+
+		return lm;
 	}
 }
