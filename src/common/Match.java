@@ -1,6 +1,5 @@
 package common;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Observable;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -42,6 +41,19 @@ public class Match extends Observable implements Runnable {
 		listeBut = new ArrayList<But>();
 		listePenalite = new ArrayList<Penalite>();
 		
+		tempsPeriodeMillSeconde = 0;
+		stopTime = System.currentTimeMillis();
+
+		timerPeriode = new Timer();
+		PeriodeTimer periodeTimer = new PeriodeTimer(this);
+		timerPeriode.scheduleAtFixedRate(periodeTimer, 20*60*1000,20*60*1000);
+
+		timerAlert = new Timer();
+		AlertTimer alertTimer = new AlertTimer(this);
+		timerAlert.scheduleAtFixedRate(alertTimer, 2*60*1000,2*60*1000);
+
+
+		new Thread(this).start();
 	}
 	
 	public Match(MatchSimp matchSimp, int id){
@@ -139,12 +151,12 @@ public class Match extends Observable implements Runnable {
         notifyObservers();
 	}
 		
-	public void ajouterPenalite(String equipe, int periode, double tempsPeriode, int tempsPenalite){
-		listePenalite.add(new Penalite(equipe, periode, tempsPeriode, tempsPenalite));
+	public void ajouterPenalite(String equipe, int periode, long tempsPeriodeMs, int tempsPenalite){
+		listePenalite.add(new Penalite(equipe, periode, tempsPeriodeMs, tempsPenalite));
 	}
 	
-	public void ajouterBut(String compteur, String equipe, int periode, double tempsPeriode){
-		listeBut.add(new But(compteur, equipe, periode, tempsPeriode));
+	public void ajouterBut(String compteur, String equipe, int periode, long tempsPeriodeMs){
+		listeBut.add(new But(compteur, equipe, periode, tempsPeriodeMs));
 		if(equipe.equals(equipeD))
 			++butD;
 		else
