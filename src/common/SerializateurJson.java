@@ -1,11 +1,5 @@
 package common;
 
-import java.beans.XMLDecoder;
-import java.beans.XMLEncoder;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-
 import com.google.gson.*;
 
 public class SerializateurJson {

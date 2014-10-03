@@ -1,12 +1,14 @@
 package common;
 
+import com.google.gson.annotations.Expose;
+
 public class Penalite {
 	
-	private int numPeriode;
-	private long tempsPeriodeDebutMs;
-	private long tempsPeriodeFinMs;
-	private String equipePen;
-	private int tempsPenalite;
+	@Expose private int numPeriode;
+	@Expose private long tempsPeriodeDebutMs;
+	@Expose private long tempsPeriodeFinMs;
+	@Expose private String equipePen;
+	@Expose private int tempsPenalite;
 	
 	public Penalite(String equipe, int periode, long tempsPeriodeMs, int tempsPenalite){
 		equipePen = equipe;
@@ -15,14 +17,14 @@ public class Penalite {
 		tempsPeriodeFinMs = tempsPeriodeMs + (tempsPenalite * 60000);
 	}
 	
-	public String ToXml()
+	public String ToJson()
 	{
-		return SerializateurXML.objectToXML(this);
+		return SerializateurJson.objectToJson(this);
 	}
 	
-	static public Penalite XmlToBut(String s)
+	static public Penalite JsonToBut(String s)
 	{
-		return (Penalite)SerializateurXML.xmlToObject(s);
+		return (Penalite)SerializateurJson.jsonToObject(s, Penalite.class);
 	}
 
 }

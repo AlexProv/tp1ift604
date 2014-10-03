@@ -85,7 +85,7 @@ public class GestionnaireServeur
 		{
 			String bdtext = lireFichier(path + "/bd.xml");
 			if(bdtext != null){
-				listMatch = ListeDesMatchs.XmlToListDesMatchs(bdtext);
+				listMatch = ListeDesMatchs.JsonToListDesMatchs(bdtext);
 				ListeDesMatchs.setListeDesMatchs(listMatch);
 			}
 			else{
@@ -104,7 +104,7 @@ public class GestionnaireServeur
 	private static void sauvegarderFichier() throws FileNotFoundException, UnsupportedEncodingException{
 		File file = new File("");
 		String path = file.getAbsolutePath() + "/bd.xml";
-		String data = ListeDesMatchs.getListeDesMatchs().ToXml();
+		String data = ListeDesMatchs.getListeDesMatchs().ToJson();
 		PrintWriter writer = new PrintWriter(path, "UTF-8");
 		writer.print(data);
 		writer.close();

@@ -34,7 +34,7 @@ public class InterpreteurDeRequete implements Observer
 		if(s.startsWith(Commands.GET_LIST_MATCH.toString()))
 		{
 			s = s.substring(Commands.GET_LIST_MATCH.toString().length());
-			answer = "ListMatch" + ListeDesMatchs.getListeDesMatchs().ToXml();
+			answer = "ListMatch" + ListeDesMatchs.getListeDesMatchs().ToJson();
 		}
 		else if (s.startsWith(Commands.GET_EQUIPES_MATCH.toString()))
 		{
@@ -46,13 +46,12 @@ public class InterpreteurDeRequete implements Observer
 				
 				m = ListeDesMatchs.getListeDesMatchs().getMatch(focusMatch);
 				m.addObserver(this);
-				answer = "EquipesMatch" + m.ToXml();
+				answer = "EquipeMatch" + m.ToJson();
 			}
 			catch(Exception e )
 			{
 				e.printStackTrace();
 			}
-			
 		}
 		else if (s.startsWith(Commands.GET_CHRONO.toString()))
 		{
@@ -68,7 +67,7 @@ public class InterpreteurDeRequete implements Observer
 		else if (s.startsWith(Commands.GET_PENALITE.toString()))
 		{
 			s = s.substring(Commands.GET_PENALITE.toString().length());
-			answer = "Penalite" + m.PenaliteToXml();
+			answer = "Penalite";
 		}
 		else if (s.startsWith(Commands.SET_BET.toString()))
 		{

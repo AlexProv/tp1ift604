@@ -35,7 +35,8 @@ public class Client //implements Runnable
 		try
 		{
 			String reponse = "";
-			socket.connect(inetSocketAddress);
+			socket = new Socket(host, port);
+			//socket.connect(inetSocketAddress);
 			inStream = new DataInputStream(socket.getInputStream());
 			outStream = new DataOutputStream(socket.getOutputStream());
 
@@ -92,7 +93,7 @@ public class Client //implements Runnable
 				String message = inStream.readUTF();
 				message = message.substring(9);
 				System.out.println("Reception de: " + message + "\n");
-				ListeDesMatchs ldm = ListeDesMatchs.XmlToListDesMatchs(message);
+				ListeDesMatchs ldm = ListeDesMatchs.JsonToListDesMatchs(message);
 				System.out.println("Partie disponible : ");
 				for(Match match : ldm.getAllMatchs()){
 					System.out.println(match.getEquipeV() + " " + match.getEquipeD());
