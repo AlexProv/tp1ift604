@@ -19,7 +19,6 @@ public class GestionnaireServeur
 		try
 		{
 			Serveur serveur1 = new Serveur(port1);
-			//Serveur serveur2 = new Serveur(port2); Pour possibilite d'UDP et TCP
 			int choix = 0;
 			String donnee = "";
 			System.out.println("Voici les options a faire sur le serveur : \n1. Ajouter une partie\n2. Ajouter un but\n3. Ajouter une penalite\n4. Sauvegarder XML");
@@ -35,25 +34,25 @@ public class GestionnaireServeur
 							ListeDesMatchs.getListeDesMatchs().ajouterPartie(new Match(ListeDesMatchs.getNextId(), donnee, bufferedReader.readLine()));
 							break;
 						case 2:
-							System.out.println("Ajouter un but pour quel partie?");
+							System.out.println("Ajouter un but pour quel partie (numero)?");
 							choix = Integer.parseInt(bufferedReader.readLine());
 							Match match = ListeDesMatchs.getListeDesMatchs().getMatch(choix);
 							System.out.println("Quel est le joueur qui a marque?");
 							donnee = bufferedReader.readLine();
 							System.out.println("Quel equipe (V ou R)?");
-							if(bufferedReader.readLine() == "V")
+							if(bufferedReader.readLine().equals("V"))
 								match.ajouterBut(donnee, match.getEquipeV(), match.getNumPeriode(), match.getTempsPeriodeMillSeconde());
 							else
 								match.ajouterBut(donnee, match.getEquipeD(), match.getNumPeriode(), match.getTempsPeriodeMillSeconde());
 							break;
 						case 3:
-							System.out.println("Ajouter une penalite pour quel partie?");
+							System.out.println("Ajouter une penalite pour quel partie (numero)?");
 							choix = Integer.parseInt(bufferedReader.readLine());
 							match = ListeDesMatchs.getListeDesMatchs().getMatch(choix);
 							System.out.println("Combien de minutes?");
 							choix = Integer.parseInt(bufferedReader.readLine());
 							System.out.println("Quel equipe (V ou R)?");
-							if(bufferedReader.readLine() == "V")
+							if(bufferedReader.readLine().equals("V"))
 								match.ajouterPenalite(match.getEquipeV(), match.getNumPeriode(), match.getTempsPeriodeMillSeconde(), choix);
 							else
 								match.ajouterPenalite(match.getEquipeD(), match.getNumPeriode(), match.getTempsPeriodeMillSeconde(), choix);
@@ -82,7 +81,7 @@ public class GestionnaireServeur
 		
 		try
 		{
-			String bdtext = lireFichier(path + "/bd.xml");
+			String bdtext = lireFichier(path + "/bd.json");
 			if(bdtext != null){
 				listMatch = ListeDesMatchs.JsonToListDesMatchs(bdtext);
 				ListeDesMatchs.setListeDesMatchs(listMatch);
@@ -102,7 +101,7 @@ public class GestionnaireServeur
 	
 	private static void sauvegarderFichier() throws FileNotFoundException, UnsupportedEncodingException{
 		File file = new File("");
-		String path = file.getAbsolutePath() + "/bd.xml";
+		String path = file.getAbsolutePath() + "/bd.json";
 		String data = ListeDesMatchs.getListeDesMatchs().ToJson();
 		PrintWriter writer = new PrintWriter(path, "UTF-8");
 		writer.print(data);

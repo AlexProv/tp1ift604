@@ -1,11 +1,13 @@
 package serveur;
 
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
 import common.Commands;
 import common.ListeDesMatchs;
 import common.Match;
+import common.Penalite;
 
 public class InterpreteurDeRequete implements Observer
 {
@@ -30,12 +32,13 @@ public class InterpreteurDeRequete implements Observer
 		else if (s.startsWith(Commands.GET_EQUIPES_MATCH.toString()))
 		{
 			try{
-				//ex: request/num/num 
+				//ex: request/num/num ou request/num si premier partie
 				String[] requestParams = s.split("/");
-				int matchID = Integer.parseInt(requestParams[1]); 
-				int previousmatchID = Integer.parseInt(requestParams[2]);
-				
-				ListeDesMatchs.getListeDesMatchs().getMatch(previousmatchID).deleteObserver(this);
+				int matchID = Integer.parseInt(requestParams[1]);
+				if(requestParams.length == 3){
+					int previousmatchID = Integer.parseInt(requestParams[2]);
+					ListeDesMatchs.getListeDesMatchs().getMatch(previousmatchID).deleteObserver(this);
+				}
 				
 				m = ListeDesMatchs.getListeDesMatchs().getMatch(matchID);
 				
@@ -64,23 +67,24 @@ public class InterpreteurDeRequete implements Observer
 			int matchID = Integer.parseInt(requestParams[1]); 
 			m = ListeDesMatchs.getListeDesMatchs().getMatch(matchID);
 			
-			answer = "Pointage|" + m.getButD() + "|" + m.getButV();
+			answer = "Pointage|" + m.getEquipeD() +  ":" + m.getButD() + "|" + m.getEquipeV() +  ":" + m.getButV();
 		}
 		else if (s.startsWith(Commands.GET_PENALITE.toString()))
 		{
 			//todo: mathieu je ne sais pas comment les penalite fonctione mais il les a tt quand tu fait un get etuqipe match
-			//String[] requestParams = s.split("\\s");
-			//int matchID = Integer.parseInt(requestParams[1]); 
-			//m = ListeDesMatchs.getListeDesMatchs().getMatch(matchID);
+			String[] requestParams = s.split("\\s");
+			int matchID = Integer.parseInt(requestParams[1]); 
+			m = ListeDesMatchs.getListeDesMatchs().getMatch(matchID);
 			
-			answer = "Penalite|";
+			answer = "Penalite|" + m.getListePenalite().toString();
 		}
 		else if (s.startsWith(Commands.SET_BET.toString()))
 		{
 			s = s.substring(Commands.SET_BET.toString().length());
 			String VouD = s.substring(1);
 			s = s.substring(1);
-			int mise = Integer.parseInt(s); 
+			int mise = Integer.parseInt(s);
+			ListeDesMatchs.getListeDesMatchs();
 		}
 		return answer;
 	}

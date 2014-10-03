@@ -32,7 +32,7 @@ public class Client //implements Runnable
 		try
 		{
 			socket = new Socket(host, port);
-			//TODO: peutertre mettre un timeout sur ce sucket la
+			//TODO: peutertre mettre un timeout sur ce socket la
 			PrintWriter  printWriter = new PrintWriter(socket.getOutputStream(), true);
 			BufferedReader inStream = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			
@@ -47,7 +47,7 @@ public class Client //implements Runnable
 				System.out.println("Timeout en attendant la reponse du serveur.");
 			}
 			
-			System.out.println("Reception de: " + reponse + "\n");
+			//System.out.println("Reception de: " + reponse + "\n");
 			socket.close();
 		}
 		catch(IOException ioe)

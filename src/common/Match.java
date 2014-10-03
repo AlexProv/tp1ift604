@@ -25,6 +25,7 @@ public class Match extends Observable implements Runnable {
 	
 	
 	public long getTempsPeriodeMillSeconde() {
+		tempsPeriodeMillSeconde = System.currentTimeMillis() - stopTime;
 		return tempsPeriodeMillSeconde;
 	}
 
@@ -48,7 +49,7 @@ public class Match extends Observable implements Runnable {
 
 		timerPeriode = new Timer();
 		PeriodeTimer periodeTimer = new PeriodeTimer(this);
-		timerPeriode.scheduleAtFixedRate(periodeTimer, 20*60*1000,20*60*1000);
+		timerPeriode.scheduleAtFixedRate(periodeTimer, 0,20*60*1000);
 
 		timerAlert = new Timer();
 		AlertTimer alertTimer = new AlertTimer(this);

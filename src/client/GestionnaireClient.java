@@ -25,12 +25,23 @@ public class GestionnaireClient {
 			}
 			
 			Client client = new Client(ip, port1);
+			InitialiseurDeRequete idr = new InitialiseurDeRequete();
 			String reponse = "";
+			String requete = "";
 			
-			System.out.println("Envoye de la requete: " + Commands.GET_LIST_MATCH.toString() + " ...");
-			reponse = client.envoyerRequete(Commands.GET_LIST_MATCH.toString());
-			System.out.println("icic!!!");
-			reponse = client.envoyerRequete(Commands.GET_POINTAGE.toString() + "/1");
+			//
+			System.out.println("Bienvenue sur l'application HockeyLive!");
+			System.out.println("Voici la liste des matchs (ID, Equipe Receveur, Equipe Visiteur):");
+			 
+			idr.ParseAnswer(client.envoyerRequete(Commands.GET_LIST_MATCH.toString()));
+			
+			
+			while(true){
+				if(bufferedReader.ready()){
+					requete = bufferedReader.readLine();
+					idr.ParseAnswer(client.envoyerRequete(requete));
+				}
+			}
 		}
 		catch(IOException ioe)
 		{
