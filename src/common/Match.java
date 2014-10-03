@@ -41,6 +41,19 @@ public class Match extends Observable implements Runnable {
 		listeBut = new ArrayList<But>();
 		listePenalite = new ArrayList<Penalite>();
 		
+		tempsPeriodeMillSeconde = 0;
+		stopTime = System.currentTimeMillis();
+
+		timerPeriode = new Timer();
+		PeriodeTimer periodeTimer = new PeriodeTimer(this);
+		timerPeriode.scheduleAtFixedRate(periodeTimer, 20*60*1000,20*60*1000);
+
+		timerAlert = new Timer();
+		AlertTimer alertTimer = new AlertTimer(this);
+		timerAlert.scheduleAtFixedRate(alertTimer, 2*60*1000,2*60*1000);
+
+
+		new Thread(this).start();
 	}
 	
 	public Match(MatchSimp matchSimp, int id){

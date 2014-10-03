@@ -2,8 +2,10 @@ package common;
 
 import java.util.ArrayList;
 
+import com.google.gson.annotations.Expose;
+
 public class ListeDesMatchs {
-	private ArrayList<Match> liste;
+	@Expose private ArrayList<Match> liste;
 	private final int nbMatchsMaximum = 10;
 	
 	static ListeDesMatchs lm;
@@ -42,13 +44,6 @@ public class ListeDesMatchs {
 		return match.getId() + 1;
 	}
 	
-	public int ajouterPartie(MatchSimp match, int numero){
-		if(liste.size() < nbMatchsMaximum)
-			liste.add(new Match(match, numero));
-		else
-			System.out.print("Match maximum atteint");
-		return ++numero;
-	}
 	
 	public Match getMatch(int noMatch){
 		for (Match match : liste) {
@@ -66,13 +61,13 @@ public class ListeDesMatchs {
 		return lm.liste.size();
 	}
 	
-	public String ToXml()
+	public String ToJson()
 	{
-		return SerializateurXML.objectToXML(this);
+		return SerializateurJson.objectToJson(this);
 	}
 	
-	static public ListeDesMatchs XmlToListDesMatchs(String s)
+	static public ListeDesMatchs JsonToListDesMatchs(String s)
 	{
-		return (ListeDesMatchs)SerializateurXML.xmlToObject(s);
+		return (ListeDesMatchs)SerializateurJson.jsonToObject(s,ListeDesMatchs.class);
 	}
 }
