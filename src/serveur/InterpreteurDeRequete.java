@@ -9,44 +9,38 @@ import common.Match;
 
 public class InterpreteurDeRequete implements Observer
 {
-	private int focusMatch;
+	
 
 	public InterpreteurDeRequete()
 	{
-		focusMatch = -1;
-	}
-
-	public int getFocusMatch() {
-		return focusMatch;
-	}
 	
-	private void setFocusMatch(int focusMatch) {
-		if(focusMatch > -1)
-			this.focusMatch = focusMatch;
 	}
 	
 	public String ParseCommand(String s)
 	{
 		String answer = "";
 		
-		Match m = ListeDesMatchs.getListeDesMatchs().getMatch(focusMatch);
+		Match m;
 		
 		if(s.startsWith(Commands.GET_LIST_MATCH.toString()))
 		{
 			s = s.substring(Commands.GET_LIST_MATCH.toString().length());
-			answer = "ListMatch" + ListeDesMatchs.getListeDesMatchs().ToJson();
+			answer = "ListMatch|" + ListeDesMatchs.getListeDesMatchs().ToJson();
 		}
 		else if (s.startsWith(Commands.GET_EQUIPES_MATCH.toString()))
 		{
 			try{
-				m.deleteObserver(this);
-				s = s.substring(Commands.GET_EQUIPES_MATCH.toString().length());
-				int i = Integer.parseInt(s);
-				setFocusMatch(i);
+				//ex: request|num|num 
+				String[] requestParams = s.split("|");
+				int matchID = Integer.parseInt(requestParams[1]); 
+				int previousmatchID = Integer.parseInt(requestParams[2]);
 				
-				m = ListeDesMatchs.getListeDesMatchs().getMatch(focusMatch);
+				ListeDesMatchs.getListeDesMatchs().getMatch(previousmatchID).deleteObserver(this);
+				
+				m = ListeDesMatchs.getListeDesMatchs().getMatch(matchID);
+				
 				m.addObserver(this);
-				answer = "EquipeMatch" + m.ToJson();
+				answer = "EquipeMatch|" + m.ToJson();
 			}
 			catch(Exception e )
 			{
@@ -55,19 +49,31 @@ public class InterpreteurDeRequete implements Observer
 		}
 		else if (s.startsWith(Commands.GET_CHRONO.toString()))
 		{
-			s = s.substring(Commands.GET_CHRONO.toString().length());
-			answer = "Chrono" + m.getTempsPeriodeMillSeconde();
+			//ex: request|num 
+			String[] requestParams = s.split("|");
+			int matchID = Integer.parseInt(requestParams[1]); 
+			m = ListeDesMatchs.getListeDesMatchs().getMatch(matchID);
+			
+			answer = "Chrono|" + m.getTempsPeriodeMillSeconde();
 			
 		}
 		else if (s.startsWith(Commands.GET_POINTAGE.toString()))
 		{
-			s = s.substring(Commands.GET_POINTAGE.toString().length());
-			answer = "Pointage" + m.getButD() + " " + m.getButV();
+			//ex: request num 
+			String[] requestParams = s.split("|");
+			int matchID = Integer.parseInt(requestParams[1]); 
+			m = ListeDesMatchs.getListeDesMatchs().getMatch(matchID);
+			
+			answer = "Pointage|" + m.getButD() + "|" + m.getButV();
 		}
 		else if (s.startsWith(Commands.GET_PENALITE.toString()))
 		{
-			s = s.substring(Commands.GET_PENALITE.toString().length());
-			answer = "Penalite";
+			//mathieu je ne sais pas comment les penalite fonctione mais il les a tt quand tu fait un get etuqipe match
+			//String[] requestParams = s.split("\\s");
+			//int matchID = Integer.parseInt(requestParams[1]); 
+			//m = ListeDesMatchs.getListeDesMatchs().getMatch(matchID);
+			
+			answer = "Penalite|";
 		}
 		else if (s.startsWith(Commands.SET_BET.toString()))
 		{
