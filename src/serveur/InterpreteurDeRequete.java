@@ -1,18 +1,26 @@
 package serveur;
 
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
+
 import common.Commands;
 import common.ListeDesMatchs;
 import common.Match;
+import common.ParisPersonne;
+import common.Penalite;
 
 public class InterpreteurDeRequete// implements Observer
 {
+	
 
 	public InterpreteurDeRequete()
 	{
- 
+	
 	}
 	
-	public String ParseCommand(String s)
+	public String ParseCommand(String s, Socket socket) throws InterruptedException
 	{
 		String answer = "";
 		
@@ -45,41 +53,15 @@ public class InterpreteurDeRequete// implements Observer
 				e.printStackTrace();
 			}
 		}
-		else if (s.startsWith(Commands.GET_CHRONO.toString()))
-		{
-			//ex: request/num 
-			String[] requestParams = s.split("/");
-			int matchID = Integer.parseInt(requestParams[1]); 
-			m = ListeDesMatchs.getListeDesMatchs().getMatch(matchID);
-			
-			answer = "Chrono|" + m.getTempsPeriodeMillSeconde();
-			
-		}
-		else if (s.startsWith(Commands.GET_POINTAGE.toString()))
-		{
-			//ex: request num 
-			String[] requestParams = s.split("/");
-			int matchID = Integer.parseInt(requestParams[1]); 
-			m = ListeDesMatchs.getListeDesMatchs().getMatch(matchID);
-			
-			answer = "Pointage|" + m.getEquipeD() +  ":" + m.getButD() + "|" + m.getEquipeV() +  ":" + m.getButV();
-		}
-		else if (s.startsWith(Commands.GET_PENALITE.toString()))
-		{
-			//todo: mathieu je ne sais pas comment les penalite fonctione mais il les a tt quand tu fait un get etuqipe match
-			String[] requestParams = s.split("\\s");
-			int matchID = Integer.parseInt(requestParams[1]); 
-			m = ListeDesMatchs.getListeDesMatchs().getMatch(matchID);
-			
-			answer = "Penalite|" + m.getListePenalite().toString();
-		}
 		else if (s.startsWith(Commands.SET_BET.toString()))
 		{
-			s = s.substring(Commands.SET_BET.toString().length());
-			String VouD = s.substring(1);
-			s = s.substring(1);
-			int mise = Integer.parseInt(s);
-			ListeDesMatchs.getListeDesMatchs();
+			String[] requestParams = s.split("/");
+			//Id match
+			int idMatch = Integer.parseInt(requestParams[1]);
+			//V ou R
+			String equipe = requestParams[2];
+			int mise = Integer.parseInt(requestParams[3]);
+			ListeDesMatchs.getListeDesMatchs().getMatch(idMatch).getParis().addParisQueue(new ParisPersonne(equipe, mise, socket));
 		}
 		return answer;
 	}

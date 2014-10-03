@@ -31,11 +31,8 @@ public class Message implements Runnable
 		{
 			BufferedReader inStream = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			String message = inStream.readLine();
-			
-			/*DataInputStream inStream = new DataInputStream(socket.getInputStream());
-			String message = inStream.readUTF();*/
 			System.out.println( "reception du message -- " + message + " -- du socket: " + socket);
-			String answer = interpreteurRequete.ParseCommand(message);
+			String answer = interpreteurRequete.ParseCommand(message, socket);
 			serveur.EnvoyeAClient(socket, answer);
 		}
 		catch(EOFException eofe)
@@ -46,9 +43,8 @@ public class Message implements Runnable
 		{
 			ioe.printStackTrace();
 		}
-		//finally
-		//{
-			//serveur.FermerConnection(socket);
-		//}
+		catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 }

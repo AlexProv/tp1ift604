@@ -4,6 +4,7 @@ import java.io.*;
 
 import common.ListeDesMatchs;
 import common.Match;
+import common.ParisPersonne;
 import serveur.Communication.Serveur;
 
 public class GestionnaireServeur
@@ -21,7 +22,7 @@ public class GestionnaireServeur
 			Serveur serveur1 = new Serveur(port1);
 			int choix = 0;
 			String donnee = "";
-			System.out.println("Voici les options a faire sur le serveur : \n1. Ajouter une partie\n2. Ajouter un but\n3. Ajouter une penalite\n4. Sauvegarder XML");
+			System.out.println("Voici les options a faire sur le serveur : \n1. Ajouter une partie\n2. Ajouter un but\n3. Ajouter une penalite\n4. Sauvegarder JSON\n5. GetBet");
 			while(true)
 			{
 				if(bufferedReader.ready()){
@@ -59,6 +60,14 @@ public class GestionnaireServeur
 							break;
 						case 4:
 							sauvegarderFichier();
+							break;
+						case 5:
+							for(Match match1 : ListeDesMatchs.getListeDesMatchs().getAllMatchs()){
+								for(ParisPersonne pp : match1.getParis().getParis()){
+									System.out.println(pp.getEquipe() + " " + pp.getMise());
+								}
+							}
+							
 							break;
 					}
 				}

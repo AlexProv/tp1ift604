@@ -3,6 +3,9 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import com.google.gson.annotations.Expose;
 
@@ -15,6 +18,7 @@ public class Match extends Observable implements Runnable {
 	@Expose private int numPeriode;
 	@Expose private Timer timerPeriode;
 	@Expose private Timer timerAlert;
+	@Expose private Paris paris;
 	
 	@Expose private long tempsPeriodeMillSeconde; 
 	@Expose private long stopTime;
@@ -44,6 +48,8 @@ public class Match extends Observable implements Runnable {
 		timerPeriode = new Timer();
 		listeBut = new ArrayList<But>();
 		listePenalite = new ArrayList<Penalite>();
+		setParis(new Paris());
+		
 		
 		tempsPeriodeMillSeconde = 0;
 		stopTime = System.currentTimeMillis();
@@ -119,6 +125,20 @@ public class Match extends Observable implements Runnable {
 
 	public void setListePenalite(ArrayList<Penalite> listePenalite) {
 		this.listePenalite = listePenalite;
+	}
+
+	/**
+	 * @return the paris
+	 */
+	public Paris getParis() {
+		return paris;
+	}
+
+	/**
+	 * @param paris the paris to set
+	 */
+	public void setParis(Paris paris) {
+		this.paris = paris;
 	}
 
 	public int getId() {
