@@ -50,7 +50,7 @@ public class InitialiseurDeRequete
 		if(answers[0].equals(Commands.EQUIPE_MATCH.toString()))
 		{
 			matchCourant = Match.JsonToMatch(answers[1]);
-			System.out.println("Resume du match no." + matchCourant.getId() + " : " + matchCourant.getEquipeV() + " à " + matchCourant.getEquipeD());
+			System.out.println("Resume du match no." + matchCourant.getId() + " : " + matchCourant.getEquipeV() + " vs. " + matchCourant.getEquipeD());
 			System.out.println(matchCourant.getButV() + "-" + matchCourant.getButD());
 			long currentTime = matchCourant.getTempsPeriodeMillSeconde();
 			System.out.println("Periode " + matchCourant.getNumPeriode() + ", " + setTime(currentTime));
