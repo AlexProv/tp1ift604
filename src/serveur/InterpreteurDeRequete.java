@@ -40,7 +40,7 @@ public class InterpreteurDeRequete implements Observer
 		if(s.startsWith(GetListMatch))
 		{
 			s = s.substring(GetListMatch.length());
-			answer = "ListMatch" + ListeDesMatchs.getListeDesMatchs().ToXml();
+			answer = "ListMatch" + ListeDesMatchs.getListeDesMatchs().ToJson();
 		}
 		else if (s.startsWith(GetEquipesMatch))
 		{
@@ -52,7 +52,7 @@ public class InterpreteurDeRequete implements Observer
 				
 				m = ListeDesMatchs.getListeDesMatchs().getMatch(focusMatch);
 				m.addObserver(this);
-				answer = "EquipeMatch" + m.ToXml();
+				answer = "EquipeMatch" + m.ToJson();
 			}
 			catch(Exception e )
 			{
@@ -74,7 +74,7 @@ public class InterpreteurDeRequete implements Observer
 		else if (s.startsWith(GetPenalite))
 		{
 			s = s.substring(GetPenalite.length());
-			answer = "Penalite" + m.PenaliteToXml();
+			answer = "Penalite";
 		}
 		else if (s.startsWith(setBet))
 		{

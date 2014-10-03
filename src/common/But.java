@@ -1,12 +1,14 @@
 package common;
 
+import com.google.gson.annotations.Expose;
+
 
 public class But {
 	
-	private String pointeur;
-	private String equipe;
-	private int numPeriode;
-	private long tempsPeriodeMs;
+	@Expose private String pointeur;
+	@Expose private String equipe;
+	@Expose private int numPeriode;
+	@Expose private long tempsPeriodeMs;
 	
 	public But(String pointeur, String equipe, int numPeriode, long tempsPeriodeMs){
 		this.pointeur = pointeur;
@@ -17,12 +19,12 @@ public class But {
 	
 	public String ToXml()
 	{
-		return SerializateurXML.objectToXML(this);
+		return  SerializateurJson.objectToJson(this);
 	}
 	
 	static public But XmlToBut(String s)
 	{
-		return (But)SerializateurXML.xmlToObject(s);
+		return (But)SerializateurJson.jsonToObject(s, But.class);
 	}
 	
 	

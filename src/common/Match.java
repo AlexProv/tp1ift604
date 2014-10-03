@@ -4,22 +4,24 @@ import java.util.Observable;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.google.gson.annotations.Expose;
+
 public class Match extends Observable implements Runnable {
 	
-	private String equipeV;
-	private String equipeD;
-	private int butV;
-	private int butD;
-	private int numPeriode;
-	private Timer timerPeriode;
-	private Timer timerAlert;
+	@Expose private String equipeV;
+	@Expose private String equipeD;
+	@Expose private int butV;
+	@Expose private int butD;
+	@Expose private int numPeriode;
+	@Expose private Timer timerPeriode;
+	@Expose private Timer timerAlert;
 	
-	private long tempsPeriodeMillSeconde; 
-	private long stopTime;
+	@Expose private long tempsPeriodeMillSeconde; 
+	@Expose private long stopTime;
 	
-	private ArrayList<But> listeBut;
-	private ArrayList<Penalite> listePenalite;
-	private int id;
+	@Expose private ArrayList<But> listeBut;
+	@Expose private ArrayList<Penalite> listePenalite;
+	@Expose private int id;
 	
 	
 	public long getTempsPeriodeMillSeconde() {
@@ -56,28 +58,6 @@ public class Match extends Observable implements Runnable {
 		new Thread(this).start();
 	}
 	
-	public Match(MatchSimp matchSimp, int id){
-		equipeV = matchSimp.getAwayTeam();
-		equipeD = matchSimp.getHomeTeam();
-		this.id = id;
-		numPeriode = 1;
-		listeBut = new ArrayList<But>();
-		listePenalite = new ArrayList<Penalite>();
-		
-		tempsPeriodeMillSeconde = 0;
-		stopTime =  System.currentTimeMillis();
-		
-		timerPeriode = new Timer();
-		PeriodeTimer periodeTimer = new PeriodeTimer(this);
-		timerPeriode.scheduleAtFixedRate(periodeTimer, 20*60*1000,20*60*1000);
-		
-		timerAlert = new Timer();
-		AlertTimer alertTimer = new AlertTimer(this);
-		timerPeriode.scheduleAtFixedRate(periodeTimer, 2*60*1000,2*60*1000);
-				
-		
-		new Thread(this).start();
-	}
 	
 	public String getEquipeV() {
 		return equipeV;
@@ -163,19 +143,14 @@ public class Match extends Observable implements Runnable {
 			++butV;
 	}
 	
-	public String ToXml()
+	public String ToJson()
 	{
-		return SerializateurXML.objectToXML(this);
+		return SerializateurJson.objectToJson(this);
 	}
 	
-	static public Match XmlToMatch(String s)
+	static public Match JsonToMatch(String s)
 	{
-		return (Match)SerializateurXML.xmlToObject(s);
-	}
-	
-	public String PenaliteToXml()
-	{
-		return SerializateurXML.objectToXML(listePenalite);
+		return (Match)SerializateurJson.jsonToObject(s,Match.class);
 	}
 	
 	@Override
