@@ -52,6 +52,8 @@ public class InitialiseurDeRequete
 			matchCourant = Match.JsonToMatch(answers[1]);
 			System.out.println("Resume du match no." + matchCourant.getId() + " : " + matchCourant.getEquipeV() + " à " + matchCourant.getEquipeD());
 			System.out.println(matchCourant.getButV() + "-" + matchCourant.getButD());
+			long currentTime = matchCourant.getTempsPeriodeMillSeconde();
+			System.out.println("Periode " + matchCourant.getNumPeriode() + ", " + setTime(currentTime));
 			System.out.println("Sommaire des buts");
 			int i = 1;
 			for(But but: matchCourant.getListeBut()){
@@ -60,15 +62,16 @@ public class InitialiseurDeRequete
 					    TimeUnit.MILLISECONDS.toSeconds(but.getTempsPeriodeMs()) - 
 					    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(but.getTempsPeriodeMs()))
 					));
+				++i;
 			}
-			System.out.println("Sommaire des buts");
+			System.out.println("Sommaire des penalites");
 			i = 1;
 			for(Penalite penalite: matchCourant.getListePenalite()){
-				System.out.println(i + ". " + penalite.getEquipePen() + " " + penalite.getTempsPenalite() +" min, Periode " + penalite.getNumPeriode() + " " + String.format("%02d:%02d", 
-					    TimeUnit.MILLISECONDS.toMinutes(penalite.getTempsPeriodeDebutMs()),
-					    TimeUnit.MILLISECONDS.toSeconds(penalite.getTempsPeriodeDebutMs()) - 
-					    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(penalite.getTempsPeriodeDebutMs()))
-					));
+				if(penalite.getTempsPeriodeFinMs() >= currentTime)
+					System.out.println(i + ". " + penalite.getEquipePen() + " " + penalite.getTempsPenalite() +" min, Periode " + penalite.getNumPeriode() + " " + setTime(penalite.getTempsPeriodeDebutMs()) + " (En cours)");
+				else
+					System.out.println(i + ". " + penalite.getEquipePen() + " " + penalite.getTempsPenalite() +" min, Periode " + penalite.getNumPeriode() + " " + setTime(penalite.getTempsPeriodeDebutMs()));
+				++i;
 			}
 		}
 	}
