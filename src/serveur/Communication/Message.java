@@ -28,6 +28,7 @@ public class Message implements Runnable
 		{
 			System.out.println( "reception du message -- " + message + " -- du socket: " + socket);
 			String answer = interpreteurRequete.ParseCommand(message);
+			//System.out.println(answer);
 			serveur.EnvoyeAClient(socket, answer);
 		}
 		catch (InterruptedException e) {

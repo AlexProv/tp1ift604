@@ -1,20 +1,15 @@
 package common;
 
-import java.net.Socket;
-
-import serveur.Communication.Serveur;
+import java.util.UUID;
 
 public class ParisPersonne {
 	private String equipe;
 	private double mise;
-	private Socket socket;
-	private Serveur serveur;
+	private UUID uuid;
 	
-	public ParisPersonne(String equipe, double mise, Socket socket, Serveur serveur){
+	public ParisPersonne(String equipe, double mise, UUID uuid){
 		this.setEquipe(equipe);
 		this.setMise(mise);
-		this.setSocket(socket);
-		this.setServeur(serveur);
 	}
 
 	/**
@@ -45,19 +40,11 @@ public class ParisPersonne {
 		this.mise = mise;
 	}
 
-	public Socket getSocket() {
-		return socket;
+	public UUID getUuid() {
+		return uuid;
 	}
 
-	public void setSocket(Socket socket) {
-		this.socket = socket;
-	}
-
-	public Serveur getServeur() {
-		return serveur;
-	}
-
-	public void setServeur(Serveur serveur) {
-		this.serveur = serveur;
+	public void setUuid(UUID uuid) {
+		this.uuid = uuid;
 	}
 }

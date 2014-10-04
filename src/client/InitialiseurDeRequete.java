@@ -136,6 +136,14 @@ public class InitialiseurDeRequete
 						
 					}
 				}
+				else{
+					String s = client.envoyerRequete(Commands.GET_RESULT_BET.toString()+ "/" + match.getId() + "/" + client.uuid);
+					String[] answers = s.split("\\|");
+					if(answers[0].equals(Commands.SET_BET.toString()))
+					{
+						System.out.println(answers[1]);
+					}
+				}
 			}
 		}
 	}

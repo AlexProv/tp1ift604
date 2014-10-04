@@ -2,6 +2,7 @@ package common;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class Paris{
 	private List<ParisPersonne> listParisMatch;
@@ -20,31 +21,40 @@ public class Paris{
 		return listParisMatch;
 	}
 	
-	public void calculerGain(String gagnant){
+	public String calculerGain(String gagnant, UUID uuid){
 		double totalMiseProrata = 0;
 		double totalMiseGagnante = 0;
 		if(gagnant == "N"){
 			for (ParisPersonne parisPersonne : listParisMatch) {
-				parisPersonne.getServeur().EnvoyeAClient(parisPersonne.getSocket(), "SetBet|Mise de depart:" + parisPersonne.getMise() + "$,Resultat:" + (parisPersonne.getMise() * 0.75) + "$");
+				return "SetBet|Mise de depart:" + parisPersonne.getMise() + "$,Resultat:" + (parisPersonne.getMise() * 0.75) + "$";
 			}
 		}
 		else{
 			totalMiseProrata = (0.75 * totalMise);
 			for (ParisPersonne parisPersonne : listParisMatch) {
-				if(parisPersonne.getEquipe() == gagnant){
-					totalMiseGagnante += parisPersonne.getMise();
+				if(parisPersonne.getUuid() == uuid){
+					if(parisPersonne.getEquipe() == gagnant){
+						totalMiseGagnante += parisPersonne.getMise();
+					}
+					else{
+						return "SetBet|Mise de depart:" + parisPersonne.getMise() + "$,Resultat:0$";
+					}
 				}
 				else{
-					parisPersonne.getServeur().EnvoyeAClient(parisPersonne.getSocket(), "SetBet|Mise de depart:" + parisPersonne.getMise() + "$,Resultat:0$");
+					if(parisPersonne.getEquipe() == gagnant){
+						totalMiseGagnante += parisPersonne.getMise();
+					}
 				}
 			}
 			for (ParisPersonne parisPersonne : listParisMatch) {
-				if(parisPersonne.getEquipe() == gagnant){
+				if(parisPersonne.getUuid() == uuid){
+					
 					double currentMise = parisPersonne.getMise();
 					double pourcentageTotalGagnant = currentMise/totalMiseGagnante;
-					parisPersonne.getServeur().EnvoyeAClient(parisPersonne.getSocket(), "SetBet|Mise de depart:" + parisPersonne.getMise() + "$,Resultat:" + (pourcentageTotalGagnant * totalMiseProrata) + "$");
+					return "SetBet|Mise de depart:" + parisPersonne.getMise() + "$,Resultat:" + (pourcentageTotalGagnant * totalMiseProrata) + "$";
 				}
 			}
 		}
+		return "SetBet|Miss the net";//If UUID is not the same
 	}
 }

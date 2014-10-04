@@ -1,6 +1,7 @@
 package serveur;
 
 import java.net.Socket;
+import java.util.UUID;
 
 import serveur.Communication.Serveur;
 import common.Commands;
@@ -44,6 +45,22 @@ public class InterpreteurDeRequete// implements Observer
 				e.printStackTrace();
 			}
 		}
+		else if(s.startsWith(Commands.GET_RESULT_BET.toString())){
+			String[] reqStrings = s.split("/");
+			int matchID = Integer.parseInt(reqStrings[1]);
+			UUID uuid = UUID.fromString(reqStrings[2]);
+			
+			m = ListeDesMatchs.getListeDesMatchs().getMatch(matchID);
+			if(m.getButD() > m.getButV()){
+				answer = m.getParis().calculerGain("D", uuid);
+			}
+			else if (m.getButV() > m.getButD()){
+				answer = m.getParis().calculerGain("V", uuid);
+			}
+			else{
+				answer = m.getParis().calculerGain("N", uuid);
+			}
+		}
 		return answer;
 	}
 	
@@ -54,9 +71,10 @@ public class InterpreteurDeRequete// implements Observer
 		//V ou R
 		String equipe = requestParams[2];
 		int mise = Integer.parseInt(requestParams[3]);
+		UUID uuid = UUID.fromString(requestParams[4]);
 		synchronized (ListeDesMatchs.getListeDesMatchs().getMatch(idMatch).getParis()) {
 			if(ListeDesMatchs.getListeDesMatchs().getMatch(idMatch).getNumPeriode() != 3){
-				ListeDesMatchs.getListeDesMatchs().getMatch(idMatch).getParis().setParis(new ParisPersonne(equipe, mise, socket, serveur));
+				ListeDesMatchs.getListeDesMatchs().getMatch(idMatch).getParis().setParis(new ParisPersonne(equipe, mise, uuid));
 				return true;
 			}
 			else{

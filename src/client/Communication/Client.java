@@ -3,6 +3,7 @@ package client.Communication;
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.util.UUID;
 
 public class Client
 {
@@ -10,12 +11,14 @@ public class Client
 	private Socket socket;
 	private String host;
 	private int port;
+	public UUID uuid;
 	
 	
 	public Client(String host, int port) throws IOException
 	{
 		this.host = host;
 		this.port = port;
+		this.uuid = UUID.randomUUID();
 	}
 
 	
@@ -31,6 +34,9 @@ public class Client
 			
 			try
 			{
+				if(cmd.startsWith("SetBet")){
+					cmd += "/" + uuid.toString();
+				}
 				printWriter.println(cmd);
 				reponse = inStream.readLine();
 			}
