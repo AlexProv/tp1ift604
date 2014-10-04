@@ -180,7 +180,7 @@ public class Match extends Observable implements Runnable {
 			{
 				tempsPeriodeMillSeconde += System.currentTimeMillis() - stopTime ;
 				stopTime = System.currentTimeMillis();
-				if(tempsPeriodeMillSeconde >= (1000 * 60 * 1)){
+				if(tempsPeriodeMillSeconde >= (1000 * 60 * 60)){
 					if(getButD() > getButV())
 						this.getParis().calculerGain("D");
 					else if(getButV() > getButD())
