@@ -1,23 +1,13 @@
 package client.Communication;
 
 import java.io.*;
-import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
-import java.util.TimerTask;
 
-import common.Match;
-
-import serveur.InterpreteurDeRequete;
-
-public class Client //implements Runnable
+public class Client
 {
-	private DataInputStream inStream;
 	private DataOutputStream outStream;
-	private InetSocketAddress inetSocketAddress;
 	private Socket socket;
-
-	private InterpreteurDeRequete interpreteurRequete;
 	private String host;
 	private int port;
 	
@@ -35,7 +25,7 @@ public class Client //implements Runnable
 		try
 		{
 			socket = new Socket(host, port);
-			//TODO: peutertre mettre un timeout sur ce socket la
+			socket.setSoTimeout(10000);//Timeout de 10 secondes
 			PrintWriter  printWriter = new PrintWriter(socket.getOutputStream(), true);
 			BufferedReader inStream = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			
@@ -49,8 +39,6 @@ public class Client //implements Runnable
 				reponse = "ste";
 				System.out.println("Timeout en attendant la reponse du serveur.");
 			}
-			
-			//System.out.println("Reception de: " + reponse + "\n");
 			socket.close();
 		}
 		catch(IOException ioe)

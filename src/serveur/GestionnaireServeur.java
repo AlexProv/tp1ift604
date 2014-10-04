@@ -15,8 +15,7 @@ public class GestionnaireServeur
 	{
 		System.out.println("Initialisation du serveur");
 		PreLaunchSequence();
-		int port1 = 9876,
-			port2 = 9877;
+		int port1 = 9876;
 		try
 		{
 			Serveur serveur1 = new Serveur(port1);
@@ -35,12 +34,12 @@ public class GestionnaireServeur
 							ListeDesMatchs.getListeDesMatchs().ajouterPartie(new Match(ListeDesMatchs.getNextId(), donnee, bufferedReader.readLine()));
 							break;
 						case 2:
-							System.out.println("Ajouter un but pour quel partie (numero)?");
+							System.out.println("Ajouter un but pour quel partie (idPartie)?");
 							choix = Integer.parseInt(bufferedReader.readLine());
 							Match match = ListeDesMatchs.getListeDesMatchs().getMatch(choix);
 							System.out.println("Quel est le joueur qui a marque?");
 							donnee = bufferedReader.readLine();
-							System.out.println("Quel equipe (V ou R)?");
+							System.out.println("Quel equipe (V ou D)?");
 							if(bufferedReader.readLine().equals("V"))
 								match.ajouterBut(donnee, match.getEquipeV(), match.getNumPeriode(), match.getTempsPeriodeMillSeconde());
 							else

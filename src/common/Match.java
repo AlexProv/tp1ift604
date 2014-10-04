@@ -3,9 +3,6 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingDeque;
-import java.util.concurrent.LinkedBlockingQueue;
 
 import com.google.gson.annotations.Expose;
 
@@ -29,8 +26,6 @@ public class Match extends Observable implements Runnable {
 	
 	
 	public long getTempsPeriodeMillSeconde() {
-		//tempsPeriodeMillSeconde = System.currentTimeMillis() - stopTime;
-		//stopTime = System.currentTimeMillis();
 		return tempsPeriodeMillSeconde;
 	}
 
@@ -151,7 +146,6 @@ public class Match extends Observable implements Runnable {
 
 	public void alert()
 	{
-		//todo Alert Client trough observator ?
 		setChanged();
         notifyObservers();
 	}
@@ -180,12 +174,21 @@ public class Match extends Observable implements Runnable {
 	
 	@Override
 	public void run() {
-		while(true)//va besoion d'etre modifier a match done
+		while(true)
 		{
 			if(System.currentTimeMillis() != stopTime )
 			{
 				tempsPeriodeMillSeconde += System.currentTimeMillis() - stopTime ;
 				stopTime = System.currentTimeMillis();
+				if(tempsPeriodeMillSeconde >= (1000 * 60 * 1)){
+					if(getButD() > getButV())
+						this.getParis().calculerGain("D");
+					else if(getButV() > getButD())
+						this.getParis().calculerGain("V");
+					else
+						this.getParis().calculerGain("N");// N pour partie nul
+					break;
+				}
 			}
 		}
 	}

@@ -2,15 +2,19 @@ package common;
 
 import java.net.Socket;
 
+import serveur.Communication.Serveur;
+
 public class ParisPersonne {
 	private String equipe;
-	private int mise;
+	private double mise;
 	private Socket socket;
+	private Serveur serveur;
 	
-	public ParisPersonne(String equipe, int mise, Socket socket){
+	public ParisPersonne(String equipe, double mise, Socket socket, Serveur serveur){
 		this.setEquipe(equipe);
 		this.setMise(mise);
 		this.setSocket(socket);
+		this.setServeur(serveur);
 	}
 
 	/**
@@ -30,14 +34,14 @@ public class ParisPersonne {
 	/**
 	 * @return the mise
 	 */
-	public int getMise() {
+	public double getMise() {
 		return mise;
 	}
 
 	/**
 	 * @param mise the mise to set
 	 */
-	public void setMise(int mise) {
+	public void setMise(double mise) {
 		this.mise = mise;
 	}
 
@@ -47,5 +51,13 @@ public class ParisPersonne {
 
 	public void setSocket(Socket socket) {
 		this.socket = socket;
+	}
+
+	public Serveur getServeur() {
+		return serveur;
+	}
+
+	public void setServeur(Serveur serveur) {
+		this.serveur = serveur;
 	}
 }

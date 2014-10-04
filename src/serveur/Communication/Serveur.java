@@ -13,13 +13,12 @@ public class Serveur implements Runnable {
 
 	public Serveur(int port) throws IOException {
 		socketServeur = new ServerSocket(port);
-		// socketServeur.setSoTimeout(3000);//Debloquer le serveur quand
-		// personne ne se connecte
 		new Thread(this).start();
 	}
 
 	public void run() {
 		Message message;
+		MessageObject messageObject;
 		Socket socket;
 		try {
 			while (true) {
@@ -28,8 +27,17 @@ public class Serveur implements Runnable {
 				synchronized (outputStreams) {
 					outputStreams.put(socket,
 							new DataOutputStream(socket.getOutputStream()));
-					message = new Message(this, socket);
-					pool.addTask(message);
+					BufferedReader inStream = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+					String messageData = inStream.readLine();
+					if(messageData.contains("SetBet")){
+						
+						messageObject = new MessageObject(this, socket, messageData);
+						pool.addTask(messageObject);
+					}
+					else{
+						message = new Message(this, socket, messageData);
+						pool.addTask(message);
+					}
 				}
 			}
 		} catch (SocketTimeoutException s) {
@@ -64,12 +72,6 @@ public class Serveur implements Runnable {
 			System.out.println(ioe);
 			ioe.printStackTrace();
 		}
-		// DataOutputStream outStream;
-		/*
-		 * synchronized(outputStreams) { outStream = outputStreams.get(socket);
-		 * try { outStream.writeUTF(reponse); } catch(IOException ioe) {
-		 * System.out.println(ioe); ioe.printStackTrace(); } }
-		 */
 	}
 
 	public void FermerConnection(Socket socket) {

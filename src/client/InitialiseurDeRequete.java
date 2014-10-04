@@ -13,7 +13,6 @@ import common.Penalite;
 
 public class InitialiseurDeRequete
 {
-	//private Serveur serveur;
 	private Match matchCourant;
 	private ListeDesMatchs lm;
 	
@@ -49,7 +48,7 @@ public class InitialiseurDeRequete
 			for(Match match : lm.getAllMatchs()){
 				System.out.println(match.getId() + " " + match.getEquipeD() + " vs. " + match.getEquipeV());
 			}
-			System.out.println("Pour plus de d�tails sur la partie, entrez GetEquipesMatch/(id)!");
+			System.out.println("Pour plus de details sur la partie, entrez GetEquipesMatch/(id)!");
 			
 			if(alertTimer != null)
 			{
@@ -58,9 +57,7 @@ public class InitialiseurDeRequete
 		}
 		
 		if(answers[0].equals(Commands.EQUIPE_MATCH.toString()))
-		{
-			
-			
+		{	
 			matchCourant = Match.JsonToMatch(answers[1]);
 			System.out.println("Resume du match no." + matchCourant.getId() + " : " + matchCourant.getEquipeV() + " vs. " + matchCourant.getEquipeD());
 			System.out.println(matchCourant.getButV() + "-" + matchCourant.getButD());
@@ -69,13 +66,8 @@ public class InitialiseurDeRequete
 			System.out.println("Sommaire des buts");
 			int i = 1;
 			for(But but: matchCourant.getListeBut()){
-				System.out.println(i + ". " + but.getEquipe() + " Marque par : " + but.getPointeur() + ", Periode " + but.getNumPeriode() + " " + String.format("%02d:%02d", 
-					    TimeUnit.MILLISECONDS.toMinutes(but.getTempsPeriodeMs()),
-					    TimeUnit.MILLISECONDS.toSeconds(but.getTempsPeriodeMs()) - 
-					    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(but.getTempsPeriodeMs()))
-					));
+				System.out.println(i + ". " + but.getEquipe() + " Marque par : " + but.getPointeur() + ", Periode " + but.getNumPeriode() + " " + setTime(but.getTempsPeriodeMs()));
 				++i;
-				
 			}
 			
 			System.out.println("Sommaire des penalites");
@@ -87,11 +79,12 @@ public class InitialiseurDeRequete
 					System.out.println(i + ". " + penalite.getEquipePen() + " " + penalite.getTempsPenalite() +" min, Periode " + penalite.getNumPeriode() + " " + setTime(penalite.getTempsPeriodeDebutMs()));
 				++i;
 			}
-			
-			System.out.println(matchCourant.getTempsPeriodeMillSeconde());
 			alertTimer = new AlertTimer(matchCourant);
 			timerAlert.scheduleAtFixedRate(alertTimer, 30*1000,30*1000);
 
+		}
+		if(answers[0].equals(Commands.SET_BET.toString())){
+			System.out.println(answers[1]);
 		}
 	}
 	
@@ -116,32 +109,30 @@ public class InitialiseurDeRequete
 	
 	private class AlertTimer extends TimerTask{
 		
-		public int nbAlert;
+		//public int nbAlert;
 		Match match;
 		public AlertTimer(Match m)
 		{
 			match = m;
 		}
 	
-		public void setMatch(Match m)
+/*		public void setMatch(Match m)
 		{
 			match = m;
-		}
+		}*/
 		
 		@Override
 		public void run() {
 			synchronized (match) {
-				System.out.println("AAAA");
-				if(match.getTempsPeriodeMillSeconde() *1000 * 60 <= 60)
+				if(match.getTempsPeriodeMillSeconde() <= 60 * 1000 * 60)
 				{
-					System.out.println("BBB");
-					String[] answers = client.envoyerRequete(Commands.GET_EQUIPES_MATCH.toString() + "/" + match.getId()).split("//|");
+					String s = client.envoyerRequete(Commands.GET_EQUIPES_MATCH.toString() + "/" + match.getId());
+					String[] answers = s.split("\\|");
 					if(answers[0].equals(Commands.EQUIPE_MATCH.toString()))
 					{
-						System.out.println("CCC");
 						match = Match.JsonToMatch(answers[1]);
-						long currentTime = matchCourant.getTempsPeriodeMillSeconde();
-						System.out.println("Nouveau chrono au match: " + setTime(currentTime));
+						long currentTime = match.getTempsPeriodeMillSeconde();
+						System.out.println("Nouveau chrono au match: Periode " + match.getNumPeriode() + ", " + setTime(currentTime));
 						
 					}
 				}

@@ -13,8 +13,7 @@ public class GestionnaireClient {
 		System.out.println("Initialisation du client");
 		System.out.println("Specifiez l'adresse IP (127.0.0.1 par defaut): ");
 		String ip ="";
-		int port1 = 9876,
-			port2 = 9877;
+		int port1 = 9876;
 
 		try
 		{
@@ -26,10 +25,13 @@ public class GestionnaireClient {
 			
 			Client client = new Client(ip, port1);
 			InitialiseurDeRequete idr = new InitialiseurDeRequete(client);
-			String reponse = "";
 			String requete = "";
 			
 			System.out.println("Bienvenue sur l'application HockeyLive!");
+			System.out.println("Voici la liste des commandes possibles:");
+			System.out.println("GetListMatch");
+			System.out.println("GetEquipesMatch/idPartie");
+			System.out.println("SetBet/idPartie/D ou V/Montant(avec un point si apres decimale)");
 			System.out.println("Voici la liste des matchs (ID, Equipe Receveur, Equipe Visiteur):");
 			 
 			idr.ParseAnswer(client.envoyerRequete(Commands.GET_LIST_MATCH.toString()));
